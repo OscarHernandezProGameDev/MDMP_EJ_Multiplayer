@@ -2091,7 +2091,7 @@ MonoBehaviour:
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
     m_InputAxisValue: 0
-    m_InvertInput: 1
+    m_InvertInput: 0
     m_MinValue: -180
     m_MaxValue: 180
     m_Wrap: 1
@@ -2117,7 +2117,7 @@ MonoBehaviour:
   - m_Height: 2.5
     m_Radius: 1
   - m_Height: 1.3
-    m_Radius: 2
+    m_Radius: 3.5
   - m_Height: 0.5
     m_Radius: 2
   m_LegacyHeadingBias: 3.4028235e+38
@@ -2150,7 +2150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2441274887252803302}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.25832972, y: 0.000000022479126, z: 0.00000000601106, w: 0.9660568}
+  m_LocalRotation: {x: -0.25621685, y: 0.060055073, z: 0.015951484, w: 0.96462005}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2483,7 +2483,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6703134957343732330}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.2758591, y: 0.000000024371413, z: 0.000000006994475, w: 0.9611981}
+  m_LocalRotation: {x: -0.27372044, y: 0.05975499, z: 0.01704122, w: 0.9598}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2562,7 +2562,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6920029473615285973}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.2932512, y: 2.1035184e-15, z: 6.452264e-16, w: 0.95603544}
+  m_LocalRotation: {x: -0.2910875, y: 0.059436, z: 0.018122451, w: 0.9546764}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2641,7 +2641,7 @@ Transform:
   m_GameObject: {fileID: 9166440849033213801}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.652, z: 0}
+  m_LocalPosition: {x: 0.25, y: 1.652, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
