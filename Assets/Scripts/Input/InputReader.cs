@@ -11,6 +11,7 @@ public class InputReader : ScriptableObject, IPlayerActions
     #region Events
     public event Action<bool> OnFireEvent;
     public event Action<Vector3> OnMoveEvent;
+    public event Action<bool> OnAimEvent;
     #endregion
 
     void OnEnable()
@@ -43,6 +44,18 @@ public class InputReader : ScriptableObject, IPlayerActions
         else if (context.canceled)
         {
             OnFireEvent?.Invoke(false);
+        }
+    }
+
+    public void OnAim(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnAimEvent?.Invoke(true);
+        }
+        else if (context.canceled)
+        {
+            OnAimEvent?.Invoke(false);
         }
     }
 }
