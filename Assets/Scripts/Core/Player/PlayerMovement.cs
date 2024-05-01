@@ -34,6 +34,24 @@ public class PlayerMovement : NetworkBehaviour
         if (!IsOwner)
             return;
 
+        Movement();
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        if (!IsOwner)
+            return;
+
+        inputReader.OnMoveEvent -= HandleMovement;
+    }
+
+    private void HandleMovement(Vector3 movementInput)
+    {
+        previousMovementInput = movementInput;
+    }
+
+    private void Movement()
+    {
         float x = previousMovementInput.x;
         float z = previousMovementInput.z;
 
@@ -49,18 +67,5 @@ public class PlayerMovement : NetworkBehaviour
             Vector3 movementDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             characterController.Move(movementDirection * (movementSpeed * Time.deltaTime));
         }
-    }
-
-    public override void OnNetworkDespawn()
-    {
-        if (!IsOwner)
-            return;
-
-        inputReader.OnMoveEvent -= HandleMovement;
-    }
-
-    private void HandleMovement(Vector3 movementInput)
-    {
-        previousMovementInput = movementInput;
     }
 }
