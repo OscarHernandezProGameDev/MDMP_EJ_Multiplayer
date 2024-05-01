@@ -14,9 +14,6 @@ public class FireController : NetworkBehaviour
     private Vector3 mouseWorldPosition;
     private bool isFiring;
 
-    [Header("Settings")]
-    [SerializeField] private float projectileSpeed = 10f;
-
     public override void OnNetworkSpawn()
     {
         if (!IsOwner)
