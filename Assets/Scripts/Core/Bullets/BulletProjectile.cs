@@ -16,8 +16,8 @@ public class BulletProjectile : MonoBehaviour
     void Start()
     {
         bulletRb.velocity = transform.forward * speed;
+        DestoySelf();
     }
-
     private void DestoySelf()
     {
         Destroy(gameObject, 2f);
