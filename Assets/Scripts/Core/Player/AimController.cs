@@ -7,15 +7,17 @@ using UnityEngine;
 
 public class AimController : NetworkBehaviour
 {
+    public static AimController instance;
+
     [Header("Referencias")]
     [SerializeField] private InputReader inputReader;
     [SerializeField] private CinemachineFreeLook thirdPersonCamera;
     [SerializeField] private CinemachineFreeLook aimCamera;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     [SerializeField] private Transform fireTransform;
+    public bool isAimingStatus;
 
     [Header("Settings")]
-    private bool isAimingStatus;
     [SerializeField] private float rotationSpeed = 20f;
 
     public override void OnNetworkSpawn()
@@ -24,6 +26,8 @@ public class AimController : NetworkBehaviour
             return;
 
         inputReader.OnAimEvent += HandleAim;
+
+        instance = this;
     }
 
     public override void OnNetworkDespawn()
@@ -58,7 +62,7 @@ public class AimController : NetworkBehaviour
         aimCamera.gameObject.SetActive(isAiming);
     }
 
-    private Vector3 AimToRayPoint()
+    public Vector3 AimToRayPoint()
     {
         Vector3 mouseWorldPosition = Vector3.zero;
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
