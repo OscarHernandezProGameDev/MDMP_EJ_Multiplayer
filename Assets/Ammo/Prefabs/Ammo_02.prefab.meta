@@ -5,3 +5,10 @@ PrefabImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157327
+  packageName: Ammo
+  packageVersion: 1.0
+  assetPath: Assets/Ammo/Prefabs/Ammo_02.prefab
+  uploadId: 337843

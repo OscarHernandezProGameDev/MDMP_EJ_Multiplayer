@@ -38,7 +38,7 @@ public class PlayerMovement : NetworkBehaviour
         inputReader.OnMoveEvent -= HandleMovement;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (!IsOwner)
             return;
