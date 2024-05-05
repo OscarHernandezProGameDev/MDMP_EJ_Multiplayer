@@ -463,6 +463,7 @@ GameObject:
   - component: {fileID: 1751274885357666535}
   - component: {fileID: 1571524585288126816}
   - component: {fileID: 2387654872760201320}
+  - component: {fileID: 1644682451164744542}
   m_Layer: 0
   m_Name: Character_TEST
   m_TagString: Untagged
@@ -554,7 +555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2977514010
+  GlobalObjectIdHash: 1513155842
   InScenePlacedSourceGlobalObjectIdHash: 1513155842
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -661,6 +662,29 @@ MonoBehaviour:
   <maxHealth>k__BackingField: 100
   currentHealth:
     m_InternalValue: 0
+--- !u!136 &1644682451164744542
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316981293597076}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Height: 1.7
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.94, z: 0}
 --- !u!1 &1326360802897878
 GameObject:
   m_ObjectHideFlags: 0

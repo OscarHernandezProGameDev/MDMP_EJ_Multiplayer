@@ -69,7 +69,16 @@ public class FireController : NetworkBehaviour
     [ServerRpc]
     private void SpawnProjectileServerRpc(Vector3 projectileSpwanPoint, Vector3 aimDirection)
     {
-        Instantiate(projectileServer, projectileSpwanPoint, Quaternion.LookRotation(aimDirection, Vector3.up));
+        GameObject projectileInstance = Instantiate
+        (
+            projectileServer, projectileSpwanPoint, Quaternion.LookRotation(aimDirection, Vector3.up)
+        );
+
+        if (projectileInstance.TryGetComponent<DealDamage>(out var damage))
+        {
+            damage.SetOwner(OwnerClientId);
+        }
+
         SpawnProjectileClientRpc(projectileSpwanPoint, aimDirection);
     }
 
