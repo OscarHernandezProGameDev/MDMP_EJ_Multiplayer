@@ -9,6 +9,7 @@ public class PlayerMovement : NetworkBehaviour
     [Header("Referencias")]
     [SerializeField] private InputReader inputReader;
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private Rigidbody rigidBody;
     private Transform _mTransform;
     private Transform mainCamera;
 
@@ -66,7 +67,8 @@ public class PlayerMovement : NetworkBehaviour
                 _mTransform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 movementDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            characterController.Move(movementDirection * (movementSpeed * Time.deltaTime));
+            //characterController.Move(movementDirection * (movementSpeed * Time.deltaTime));
+            rigidBody.position += movementDirection * (movementSpeed * Time.deltaTime);
         }
     }
 }
