@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class Ammo : NetworkBehaviour
 {
-    protected int ammoValue;
+    protected int ammoValue = 10;
     protected bool isCollected;
 
     public abstract int Collect();

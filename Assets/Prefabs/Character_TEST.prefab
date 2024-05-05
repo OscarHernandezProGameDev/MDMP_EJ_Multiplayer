@@ -458,13 +458,14 @@ GameObject:
   - component: {fileID: 95787105524477528}
   - component: {fileID: 6224122393857181736}
   - component: {fileID: 8533607902757918087}
+  - component: {fileID: 1644682451164744542}
   - component: {fileID: 958826905206391515}
   - component: {fileID: 379404942149247672}
   - component: {fileID: 6682219216744583759}
   - component: {fileID: 1751274885357666535}
   - component: {fileID: 1571524585288126816}
   - component: {fileID: 2387654872760201320}
-  - component: {fileID: 1644682451164744542}
+  - component: {fileID: 4423558114834687081}
   m_Layer: 0
   m_Name: Character_TEST
   m_TagString: Untagged
@@ -571,6 +572,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!136 &1644682451164744542
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316981293597076}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Height: 1.7
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.94, z: 0}
 --- !u!114 &958826905206391515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -691,29 +715,20 @@ MonoBehaviour:
   <maxHealth>k__BackingField: 100
   currentHealth:
     m_InternalValue: 0
---- !u!136 &1644682451164744542
-CapsuleCollider:
+--- !u!114 &4423558114834687081
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1316981293597076}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.25
-  m_Height: 1.7
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.94, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a00fb7f1f90ba4f8bcdc5aabaa8bbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TotalAmmo:
+    m_InternalValue: 0
 --- !u!1 &1326360802897878
 GameObject:
   m_ObjectHideFlags: 0
