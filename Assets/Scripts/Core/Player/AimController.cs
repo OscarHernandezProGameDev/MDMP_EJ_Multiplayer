@@ -13,12 +13,14 @@ public class AimController : NetworkBehaviour
     [SerializeField] private InputReader inputReader;
     [SerializeField] private CinemachineFreeLook thirdPersonCamera;
     [SerializeField] private CinemachineFreeLook aimCamera;
+    [SerializeField] private GameObject rootHead;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     [SerializeField] private Transform fireTransform;
     public bool isAimingStatus;
 
     [Header("Settings")]
     [SerializeField] private float rotationSpeed = 20f;
+    [SerializeField] private Vector3 rootHeadInitalPosition;
 
     public override void OnNetworkSpawn()
     {
@@ -28,6 +30,8 @@ public class AimController : NetworkBehaviour
         inputReader.OnAimEvent += HandleAim;
 
         instance = this;
+
+        rootHeadInitalPosition = rootHead.transform.localPosition;
     }
 
     public override void OnNetworkDespawn()
@@ -60,6 +64,7 @@ public class AimController : NetworkBehaviour
     {
         thirdPersonCamera.gameObject.SetActive(!isAiming);
         aimCamera.gameObject.SetActive(isAiming);
+        rootHead.transform.localPosition = isAiming ? new Vector3(.5f, 1.5f, 0) : rootHeadInitalPosition;
     }
 
     public Vector3 AimToRayPoint()
