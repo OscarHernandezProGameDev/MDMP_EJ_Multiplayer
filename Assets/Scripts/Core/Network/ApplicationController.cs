@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class ApplicationController : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
-        
+        DontDestroyOnLoad(gameObject);
+
+        // Somos un servidor dericado
+        bool isDedicateServer = SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null;
+
+        LanchInMode(isDedicateServer);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void LanchInMode(bool isDedicateServer)
     {
-        
+        if (isDedicateServer)
+        {
+
+        }
+        else
+        {
+
+        }
     }
 }
