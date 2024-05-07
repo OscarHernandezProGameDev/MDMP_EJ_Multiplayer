@@ -47,9 +47,18 @@ public class HostGameManager
 
         transport.SetRelayServerData(relayServerData);
 
-        NetworkManager.Singleton.StartHost();
+        //NetworkManager.Singleton.StartHost();
 
-        NetworkManager.Singleton.SceneManager.LoadScene(gameServerName, LoadSceneMode.Single);
+        //NetworkManager.Singleton.SceneManager.LoadScene(gameServerName, LoadSceneMode.Single);
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(gameServerName, LoadSceneMode.Single);
+
+        while (!asyncLoad.isDone)
+        {
+            await Task.Delay(10);
+        }
+
+        NetworkManager.Singleton.StartHost();
 
         return true;
     }
