@@ -43,13 +43,9 @@ public class HostGameManager
         }
 
         UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-        RelayServerData relayServerData = new RelayServerData(allocation, "udp");
+        RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
 
         transport.SetRelayServerData(relayServerData);
-
-        //NetworkManager.Singleton.StartHost();
-
-        //NetworkManager.Singleton.SceneManager.LoadScene(gameServerName, LoadSceneMode.Single);
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(gameServerName, LoadSceneMode.Single);
 

@@ -1,13 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Security;
 using System.Threading.Tasks;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
+using Unity.Networking.Transport.Relay;
 using Unity.Services.Core;
+using Unity.Services.Relay;
+using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ClientGameManager
 {
+    private JoinAllocation allocation;
+
     private const string MainMenu = "MainMenu";
 
     public async Task<bool> InitAsync()
@@ -25,5 +33,26 @@ public class ClientGameManager
     public void GotoMainMenu()
     {
         SceneManager.LoadScene(MainMenu);
+    }
+
+    public async Task StartClientAsync(string joinCode)
+    {
+        try
+        {
+            allocation = await Relay.Instance.JoinAllocationAsync(joinCode);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning(ex);
+
+            return;
+        }
+
+        UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
+
+        transport.SetRelayServerData(relayServerData);
+
+        NetworkManager.Singleton.StartClient();
     }
 }
