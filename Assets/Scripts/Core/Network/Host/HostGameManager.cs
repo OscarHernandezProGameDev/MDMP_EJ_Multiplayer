@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
+using Unity.Services.Lobbies;
+using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
@@ -18,6 +20,7 @@ public class HostGameManager
 
     private Allocation allocation;
     private string JoinCode;
+    private string lobbyId;
 
     public async Task<bool> StartHostAsync()
     {
@@ -39,6 +42,29 @@ public class HostGameManager
         catch (Exception ex)
         {
             Debug.LogWarning(ex);
+
+            return false;
+        }
+
+        try
+        {
+            CreateLobbyOptions lobbyOptions = new CreateLobbyOptions
+            {
+                IsPrivate = false,
+                Data = new Dictionary<string, DataObject>
+                {
+                    ["JoinCode"] = new DataObject(visibility: DataObject.VisibilityOptions.Member, value: JoinCode)
+                }
+            };
+
+            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync("Sample Lobby name", MaxConnections, lobbyOptions);
+
+            lobbyId = lobby.Id;
+        }
+        catch (LobbyServiceException ex)
+        {
+            Debug.LogWarning(ex);
+
             return false;
         }
 
