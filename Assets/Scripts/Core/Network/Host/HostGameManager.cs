@@ -46,6 +46,11 @@ public class HostGameManager
             return false;
         }
 
+        UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
+
+        transport.SetRelayServerData(relayServerData);
+
         try
         {
             CreateLobbyOptions lobbyOptions = new CreateLobbyOptions
@@ -60,6 +65,8 @@ public class HostGameManager
             Lobby lobby = await Lobbies.Instance.CreateLobbyAsync("Sample Lobby name", MaxConnections, lobbyOptions);
 
             lobbyId = lobby.Id;
+
+            HostSingleton.Instance.StartCoroutine(HeartbeartLobby(15));
         }
         catch (LobbyServiceException ex)
         {
@@ -67,11 +74,6 @@ public class HostGameManager
 
             return false;
         }
-
-        UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-        RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
-
-        transport.SetRelayServerData(relayServerData);
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(gameServerName, LoadSceneMode.Single);
 
@@ -83,5 +85,16 @@ public class HostGameManager
         NetworkManager.Singleton.StartHost();
 
         return true;
+    }
+
+    private IEnumerator HeartbeartLobby(float waitTimeSeconds)
+    {
+        WaitForSecondsRealtime delay = new WaitForSecondsRealtime(waitTimeSeconds);
+        while (true)
+        {
+            Lobbies.Instance.SendHeartbeatPingAsync(lobbyId);
+
+            yield return delay;
+        }
     }
 }
