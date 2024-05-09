@@ -53,6 +53,13 @@ public class ClientGameManager
 
         transport.SetRelayServerData(relayServerData);
 
+        UserData userData = new UserData
+        {
+            userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name")
+        };
+        string payload = JsonUtility.ToJson(userData);
+        byte[] payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
+
         NetworkManager.Singleton.StartClient();
     }
 }

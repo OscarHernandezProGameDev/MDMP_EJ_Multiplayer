@@ -17,6 +17,7 @@ public class HostGameManager
 {
     private const int MaxConnections = 10;
     private const string gameServerName = "Game";
+    private NetworkServer networkServer;
 
     private Allocation allocation;
     private string JoinCode;
@@ -62,7 +63,8 @@ public class HostGameManager
                 }
             };
 
-            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync("Sample Lobby name", MaxConnections, lobbyOptions);
+            string playerName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Unkown");
+            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync($"{playerName}'s Lobby", MaxConnections, lobbyOptions);
 
             lobbyId = lobby.Id;
 
@@ -81,6 +83,15 @@ public class HostGameManager
         {
             await Task.Delay(10);
         }
+
+        networkServer = new NetworkServer(NetworkManager.Singleton);
+
+        UserData userData = new UserData
+        {
+            userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name")
+        };
+        string payload = JsonUtility.ToJson(userData);
+        byte[] payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
 
         NetworkManager.Singleton.StartHost();
 
