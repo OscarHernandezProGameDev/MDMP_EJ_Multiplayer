@@ -13,10 +13,10 @@ using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ClientGameManager
+public class ClientGameManager : IDisposable
 {
     private JoinAllocation allocation;
-    private NetworkClient networkClient;
+    private NetworkClient _networkClient;
 
     private const string MainMenu = "MainMenu";
 
@@ -24,7 +24,7 @@ public class ClientGameManager
     {
         await UnityServices.InitializeAsync();
 
-        networkClient = new NetworkClient(NetworkManager.Singleton);
+        _networkClient = new NetworkClient(NetworkManager.Singleton);
 
         AuthState authState = await AuthenticationManager.DoAuthAsync();
 
@@ -68,5 +68,10 @@ public class ClientGameManager
         NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
 
         NetworkManager.Singleton.StartClient();
+    }
+
+    public void Dispose()
+    {
+        _networkClient?.Dispose();
     }
 }

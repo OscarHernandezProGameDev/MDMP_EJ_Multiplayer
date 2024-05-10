@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NetworkClient
+public class NetworkClient : IDisposable
 {
     private readonly NetworkManager _networkManager;
 
@@ -29,5 +30,13 @@ public class NetworkClient
 
         if (_networkManager.IsConnectedClient)
             _networkManager.Shutdown();
+    }
+
+    public void Dispose()
+    {
+        if (_networkManager == null)
+            return;
+
+        _networkManager.OnClientDisconnectCallback -= OnClientDisconnect;
     }
 }

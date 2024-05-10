@@ -14,7 +14,7 @@ using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HostGameManager
+public class HostGameManager : IDisposable
 {
     private const int MaxConnections = 10;
     private const string gameServerName = "Game";
@@ -111,5 +111,26 @@ public class HostGameManager
 
             yield return delay;
         }
+    }
+
+    public async void Dispose()
+    {
+        HostSingleton.Instance.StopCoroutine(nameof(HeartbeartLobby));
+
+        if (!string.IsNullOrEmpty(lobbyId))
+        {
+            try
+            {
+                await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
+            }
+            catch (LobbyServiceException ex)
+            {
+                Debug.LogWarning(ex);
+            }
+
+            lobbyId = null;
+        }
+
+        networkServer?.Dispose();
     }
 }
