@@ -10,6 +10,7 @@ public class FireController : NetworkBehaviour
     [SerializeField] private Transform projectileSpwanPoint;
     [SerializeField] private GameObject projectileClient;
     [SerializeField] private GameObject projectileServer;
+    [SerializeField] private GameObject projectileBase;
     private bool isAiming;
     private Vector3 mouseWorldPosition;
     private bool isFiring;
@@ -69,10 +70,11 @@ public class FireController : NetworkBehaviour
     [ServerRpc]
     private void SpawnProjectileServerRpc(Vector3 projectileSpwanPoint, Vector3 aimDirection)
     {
-        GameObject projectileInstance = Instantiate
-        (
-            projectileServer, projectileSpwanPoint, Quaternion.LookRotation(aimDirection, Vector3.up)
-        );
+        //GameObject projectileInstance = Instantiate
+        //(
+        //    projectileServer, projectileSpwanPoint, Quaternion.LookRotation(aimDirection, Vector3.up)
+        //);
+        NetworkObject projectileInstance = NetworkObjectPool.Singleton.GetNetworkObject(projectileBase, projectileSpwanPoint, Quaternion.LookRotation(aimDirection, Vector3.up));
 
         if (projectileInstance.TryGetComponent<DealDamage>(out var damage))
         {
