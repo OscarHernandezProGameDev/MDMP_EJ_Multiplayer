@@ -466,6 +466,7 @@ GameObject:
   - component: {fileID: 1571524585288126816}
   - component: {fileID: 2387654872760201320}
   - component: {fileID: 4423558114834687081}
+  - component: {fileID: 56173076935452172}
   m_Layer: 0
   m_Name: Character_TEST
   m_TagString: Untagged
@@ -731,6 +732,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TotalAmmo:
     m_InternalValue: 0
+--- !u!114 &56173076935452172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316981293597076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7dfe68f157a61145a18c7869ff5606c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thirdPersonCamera: {fileID: 7842006244687189501}
+  priority: 15
 --- !u!1 &1326360802897878
 GameObject:
   m_ObjectHideFlags: 0
