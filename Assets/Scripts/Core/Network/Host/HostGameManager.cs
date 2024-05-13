@@ -24,6 +24,8 @@ public class HostGameManager : IDisposable
     private string JoinCode;
     private string lobbyId;
 
+    public NetworkServer NetworkServer { get => networkServer; }
+
     public async Task<bool> StartHostAsync()
     {
         try
