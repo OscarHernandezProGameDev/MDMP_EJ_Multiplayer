@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4569645125276600168}
   - component: {fileID: -9093444895524891630}
   - component: {fileID: -5729277897546372810}
+  - component: {fileID: 62920946581024465}
   m_Layer: 6
   m_Name: ProjectileBase
   m_TagString: Untagged
@@ -63,8 +64,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -150,6 +149,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b1292cfeab0c46c8f8f0362792386b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NetworkObject: {fileID: 0}
+  Prefab: {fileID: 0}
 --- !u!114 &-9093444895524891630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3072912672
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -184,3 +185,16 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &62920946581024465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8090351214618166283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4872d90319bbf93bf93cc4d26fc59d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10

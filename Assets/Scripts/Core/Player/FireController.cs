@@ -57,23 +57,39 @@ public class FireController : NetworkBehaviour
             Vector3 aimDirection = (mouseWorldPosition - projectileSpwanPoint.position).normalized;
 
             SpawnProjectileServerRpc(projectileSpwanPoint.position, aimDirection);
-            //SpawnDummyProjectile(projectileSpwanPoint.position, aimDirection);
+
+#if NO_POOLING
+            SpawnDummyProjectile(projectileSpwanPoint.position, aimDirection);
+#endif
         }
+
+        isFiring = false;
     }
 
+    #region no pooling
+#if NO_POOLING
     private void SpawnDummyProjectile(Vector3 projectileSpwanPoint, Vector3 aimDirection)
     {
         Instantiate(projectileClient, projectileSpwanPoint, Quaternion.LookRotation(aimDirection, Vector3.up));
         isFiring = false;
     }
+#endif
+    #endregion
 
     [ServerRpc]
     private void SpawnProjectileServerRpc(Vector3 projectileSpwanPoint, Vector3 aimDirection)
     {
-        //GameObject projectileInstance = Instantiate
-        //(
-        //    projectileServer, projectileSpwanPoint, Quaternion.LookRotation(aimDirection, Vector3.up)
-        //);
+        #region no pooling
+#if NO_POOLING
+        GameObject projectileInstance = Instantiate
+        (
+            projectileServer, projectileSpwanPoint, Quaternion.LookRotation(aimDirection, Vector3.up)
+        );
+#endif
+        #endregion
+
+        #region pooling
+#if !NO_POOLING
         NetworkObject projectileInstance = NetworkObjectPool.Singleton.GetNetworkObject(projectileBase, projectileSpwanPoint, Quaternion.LookRotation(aimDirection, Vector3.up));
 
         DestroySelfOnContact destroySelf = projectileInstance.GetComponent<DestroySelfOnContact>();
@@ -92,17 +108,25 @@ public class FireController : NetworkBehaviour
         Rigidbody rb = projectileInstance.GetComponent<Rigidbody>();
 
         rb.velocity = aimDirection * 10;
+#endif
+        #endregion
 
         if (projectileInstance.TryGetComponent<DealDamage>(out var damage))
         {
             damage.SetOwner(OwnerClientId);
         }
 
-        isFiring=false;
+        #region no pooling
 
-        //SpawnProjectileClientRpc(projectileSpwanPoint, aimDirection);
+#if NO_POOLING
+        SpawnProjectileClientRpc(projectileSpwanPoint, aimDirection);
+#endif
+
+        #endregion
     }
 
+    #region no pooling
+#if NO_POOLING
     [ClientRpc]
     private void SpawnProjectileClientRpc(Vector3 projectileSpwanPoint, Vector3 aimDirection)
     {
@@ -111,4 +135,6 @@ public class FireController : NetworkBehaviour
 
         SpawnDummyProjectile(projectileSpwanPoint, aimDirection);
     }
+#endif
+    #endregion
 }

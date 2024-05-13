@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5729277897546372810, guid: 1e63b86e04a33443490d75f58347921e, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 4106780523
+      objectReference: {fileID: 0}
     - target: {fileID: 8090351214618166283, guid: 1e63b86e04a33443490d75f58347921e, type: 3}
       propertyPath: m_Name
       value: ProjectileServer
