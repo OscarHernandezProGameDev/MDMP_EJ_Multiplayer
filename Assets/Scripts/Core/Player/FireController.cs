@@ -57,7 +57,7 @@ public class FireController : NetworkBehaviour
             Vector3 aimDirection = (mouseWorldPosition - projectileSpwanPoint.position).normalized;
 
             SpawnProjectileServerRpc(projectileSpwanPoint.position, aimDirection);
-            SpawnDummyProjectile(projectileSpwanPoint.position, aimDirection);
+            //SpawnDummyProjectile(projectileSpwanPoint.position, aimDirection);
         }
     }
 
@@ -76,12 +76,31 @@ public class FireController : NetworkBehaviour
         //);
         NetworkObject projectileInstance = NetworkObjectPool.Singleton.GetNetworkObject(projectileBase, projectileSpwanPoint, Quaternion.LookRotation(aimDirection, Vector3.up));
 
+        DestroySelfOnContact destroySelf = projectileInstance.GetComponent<DestroySelfOnContact>();
+
+        destroySelf.NetworkObject = projectileInstance;
+        destroySelf.Prefab = projectileBase;
+
+        // Nos aseguramos que se instance en los cientes
+        if (!projectileInstance.IsSpawned)
+        {
+            projectileInstance.Spawn();
+        }
+
+        // Este código estaba en BulletProjectile pero hay que hacerlo aqui porque ya no creamos la instancia sino usamos el pool
+
+        Rigidbody rb = projectileInstance.GetComponent<Rigidbody>();
+
+        rb.velocity = aimDirection * 10;
+
         if (projectileInstance.TryGetComponent<DealDamage>(out var damage))
         {
             damage.SetOwner(OwnerClientId);
         }
 
-        SpawnProjectileClientRpc(projectileSpwanPoint, aimDirection);
+        isFiring=false;
+
+        //SpawnProjectileClientRpc(projectileSpwanPoint, aimDirection);
     }
 
     [ClientRpc]

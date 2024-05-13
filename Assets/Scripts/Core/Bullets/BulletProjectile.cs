@@ -16,7 +16,7 @@ public class BulletProjectile : MonoBehaviour
     void Start()
     {
         bulletRb.velocity = transform.forward * speed;
-        DestoySelf();
+        //DestoySelf();
     }
     private void DestoySelf()
     {
