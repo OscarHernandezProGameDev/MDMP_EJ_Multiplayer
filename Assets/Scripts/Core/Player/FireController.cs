@@ -70,9 +70,9 @@ public class FireController : NetworkBehaviour
                 Debug.Log("No ammo");
             }
 
+            isFiring = false;
         }
 
-        isFiring = false;
     }
 
     #region no pooling
@@ -88,6 +88,11 @@ public class FireController : NetworkBehaviour
     [ServerRpc]
     private void SpawnProjectileServerRpc(Vector3 projectileSpwanPoint, Vector3 aimDirection)
     {
+        if (charger.TotalAmmo.Value <= 0)
+            return;
+
+        charger.SpendAmmo();
+
         #region no pooling
 #if NO_POOLING
         GameObject projectileInstance = Instantiate
