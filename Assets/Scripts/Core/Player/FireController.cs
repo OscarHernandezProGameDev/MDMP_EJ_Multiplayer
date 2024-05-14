@@ -11,6 +11,8 @@ public class FireController : NetworkBehaviour
     [SerializeField] private GameObject projectileClient;
     [SerializeField] private GameObject projectileServer;
     [SerializeField] private GameObject projectileBase;
+    [SerializeField] private Charger charger;
+
     private bool isAiming;
     private Vector3 mouseWorldPosition;
     private bool isFiring;
@@ -55,12 +57,19 @@ public class FireController : NetworkBehaviour
             mouseWorldPosition = AimController.instance.AimToRayPoint();
 
             Vector3 aimDirection = (mouseWorldPosition - projectileSpwanPoint.position).normalized;
-
-            SpawnProjectileServerRpc(projectileSpwanPoint.position, aimDirection);
-
+            if (charger.TotalAmmo.Value > 0)
+            {
+                SpawnProjectileServerRpc(projectileSpwanPoint.position, aimDirection);
 #if NO_POOLING
             SpawnDummyProjectile(projectileSpwanPoint.position, aimDirection);
 #endif
+
+            }
+            else
+            {
+                Debug.Log("No ammo");
+            }
+
         }
 
         isFiring = false;
