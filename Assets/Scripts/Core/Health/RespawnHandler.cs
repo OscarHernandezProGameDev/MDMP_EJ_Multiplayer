@@ -8,6 +8,7 @@ public class RespawnHandler : NetworkBehaviour
 {
     [SerializeField] private NetworkObject playerPrefab;
     [SerializeField] private float respawnTime = 2f;
+    [SerializeField] private Stats stats;
 
     public override void OnNetworkSpawn()
     {
@@ -44,6 +45,7 @@ public class RespawnHandler : NetworkBehaviour
 
     private void HandlePlayerDied(SetPlayerData player)
     {
+        stats.HandlerPlayerDeath(player.OwnerClientId);
         Destroy(player.gameObject);
 
         StartCoroutine(RespawnPlayer(player.OwnerClientId));

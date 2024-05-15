@@ -9,6 +9,12 @@ public class DealDamage : MonoBehaviour
     [SerializeField] private int damage = 10;
 
     private ulong ownerClientId;
+    private Stats stats;
+
+    private void OnEnable()
+    {
+        stats = FindAnyObjectByType<Stats>();
+    }
 
     public void SetOwner(ulong ownerClientId)
     {
@@ -27,6 +33,10 @@ public class DealDamage : MonoBehaviour
         if (other.gameObject.TryGetComponent<Health>(out var health))
         {
             health.TakeDamage(damage);
+            if (health.currentHealth.Value == 0)
+            {
+                stats.HandlerPlayerKills(ownerClientId);
+            }
         }
     }
 }
