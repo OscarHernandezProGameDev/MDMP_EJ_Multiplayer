@@ -15,7 +15,7 @@ public class RespawnHandler : NetworkBehaviour
         if (!IsServer)
             return;
 
-        SetPlayerData[] players = FindObjectsOfType<SetPlayerData>();
+        SetPlayerData[] players = FindObjectsByType<SetPlayerData>(FindObjectsSortMode.None);
 
         foreach (SetPlayerData player in players)
             HandlePlayerSpawned(player);
