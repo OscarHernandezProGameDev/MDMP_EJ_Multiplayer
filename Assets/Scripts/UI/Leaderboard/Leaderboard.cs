@@ -45,7 +45,12 @@ public class Leaderboard : NetworkBehaviour
 
     private void HandleLeaderboardEntitiesChanged(NetworkListEvent<LeaderboardEntityState> changeEvent)
     {
-        throw new NotImplementedException();
+        switch (changeEvent.Type)
+        {
+            case NetworkListEvent<LeaderboardEntityState>.EventType.Add:
+                Instantiate(leaderboardEntityPrefab, leaderboardEntityHolder);
+                break;
+        }
     }
 
     public void HandlePlayerSpawned(SetPlayerData player)
