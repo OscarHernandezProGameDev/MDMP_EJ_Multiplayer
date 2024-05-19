@@ -5,38 +5,34 @@ using UnityEngine;
 
 public class Stats : MonoBehaviour
 {
-    private Dictionary<ulong, NetworkVariable<int>> deathsStats = new Dictionary<ulong, NetworkVariable<int>>();
-    private Dictionary<ulong, NetworkVariable<int>> killsStats = new Dictionary<ulong, NetworkVariable<int>>();
+    public Dictionary<ulong, NetworkVariable<int>> DeathsStats { get; } = new Dictionary<ulong, NetworkVariable<int>>();
+    public Dictionary<ulong, NetworkVariable<int>> KillsStats { get; } = new Dictionary<ulong, NetworkVariable<int>>();
 
     public void HandlerPlayerDeath(ulong ownerId)
     {
-        if (deathsStats.ContainsKey(ownerId))
+        if (DeathsStats.ContainsKey(ownerId))
         {
-            deathsStats[ownerId].Value++;
-            Debug.Log($"Owned ID {ownerId}");
-            Debug.Log($"Deaths {deathsStats[ownerId].Value}");
-        }
-        else
-        {
-            deathsStats.Add(ownerId, new NetworkVariable<int>(1));
-            Debug.Log($"First Enthy Owned ID {ownerId}");
-            Debug.Log($"First Entry Deaths {deathsStats[ownerId].Value}");
+            DeathsStats[ownerId].Value++;
         }
     }
 
     public void HandlerPlayerKills(ulong killId)
     {
-        if (killsStats.ContainsKey(killId))
+        if (KillsStats.ContainsKey(killId))
         {
-            killsStats[killId].Value++;
-            Debug.Log($"Owned ID {killId}");
-            Debug.Log($"Kills {killsStats[killId].Value}");
+            KillsStats[killId].Value++;
         }
-        else
+    }
+
+    public void AddPlayerToLists(ulong ownerId)
+    {
+        if (!DeathsStats.ContainsKey(ownerId))
         {
-            killsStats.Add(killId, new NetworkVariable<int>(1));
-            Debug.Log($"First Entry Killer ID {killId}");
-            Debug.Log($"First Entry Kills {killsStats[killId].Value}");
+            DeathsStats[ownerId].Value++;
+        }
+        if (!KillsStats.ContainsKey(ownerId))
+        {
+            KillsStats[ownerId].Value++;
         }
     }
 }

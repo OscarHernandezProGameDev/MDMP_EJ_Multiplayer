@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Leaderboard : NetworkBehaviour
 {
@@ -12,6 +13,8 @@ public class Leaderboard : NetworkBehaviour
 
     private NetworkList<LeaderboardEntityState> leaderboardEntities;
     private List<LeaderboardEntity> entities = new List<LeaderboardEntity>();
+
+    [field: SerializeField] public Stats Statistics { get; private set; }
 
     public override void OnNetworkSpawn()
     {
@@ -85,13 +88,62 @@ public class Leaderboard : NetworkBehaviour
 
     public void HandlePlayerSpawned(SetPlayerData player)
     {
+        ulong ownerId = player.OwnerClientId;
+
         leaderboardEntities.Add(new LeaderboardEntityState
         {
-            ClientId = player.OwnerClientId,
+            ClientId = ownerId,
             PlayerName = player.playerName.Value,
             Deaths = 0,
             Kills = 0,
         });
+
+        Statistics.AddPlayerToLists(ownerId);
+
+        Statistics.DeathsStats[ownerId].OnValueChanged += (oldDeaths, newDeaths) => HandleDeathsChanged(ownerId, newDeaths);
+        Statistics.KillsStats[ownerId].OnValueChanged += (oldKills, newKills) => HandleKillsChanged(ownerId, newKills);
+    }
+
+    private void HandleDeathsChanged(ulong ownerClientId, int newDeaths)
+    {
+        for (int i = 0; i < leaderboardEntities.Count; i++)
+        {
+            var entity = leaderboardEntities[i];
+
+            if (entity.ClientId == ownerClientId)
+            {
+                leaderboardEntities[i] = new LeaderboardEntityState
+                {
+                    ClientId = entity.ClientId,
+                    PlayerName = entity.PlayerName.Value,
+                    Deaths = newDeaths,
+                    Kills = entity.Kills,
+                };
+
+                return;
+            }
+        }
+    }
+
+    private void HandleKillsChanged(ulong ownerClientId, int newKills)
+    {
+        for (int i = 0; i < leaderboardEntities.Count; i++)
+        {
+            var entity = leaderboardEntities[i];
+
+            if (entity.ClientId == ownerClientId)
+            {
+                leaderboardEntities[i] = new LeaderboardEntityState
+                {
+                    ClientId = entity.ClientId,
+                    PlayerName = entity.PlayerName.Value,
+                    Deaths = entity.Deaths,
+                    Kills = newKills,
+                };
+
+                return;
+            }
+        }
     }
 
     public void HandlePlayerDespawned(SetPlayerData player)
@@ -108,6 +160,9 @@ public class Leaderboard : NetworkBehaviour
                 break;
             }
         }
+
+        Statistics.DeathsStats[player.OwnerClientId].OnValueChanged -= (oldDeaths, newDeaths) => HandleDeathsChanged(player.OwnerClientId, newDeaths);
+        Statistics.KillsStats[player.OwnerClientId].OnValueChanged -= (oldKills, newKills) => HandleKillsChanged(player.OwnerClientId, newKills);
     }
 
     private void Awake()
