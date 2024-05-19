@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,12 +11,15 @@ public class Leaderboard : NetworkBehaviour
     [SerializeField] private LeaderboardEntity leaderboardEntityPrefab;
 
     private NetworkList<LeaderboardEntityState> leaderboardEntities;
+    private List<LeaderboardEntity> entities = new List<LeaderboardEntity>();
 
     public override void OnNetworkSpawn()
     {
         if (IsClient)
         {
             leaderboardEntities.OnListChanged += HandleLeaderboardEntitiesChanged;
+            foreach (var entity in leaderboardEntities)
+                HandleLeaderboardEntitiesChanged(new NetworkListEvent<LeaderboardEntityState> { Type = NetworkListEvent<LeaderboardEntityState>.EventType.Add, Value = entity });
         }
         if (IsServer)
         {
@@ -48,7 +52,33 @@ public class Leaderboard : NetworkBehaviour
         switch (changeEvent.Type)
         {
             case NetworkListEvent<LeaderboardEntityState>.EventType.Add:
-                Instantiate(leaderboardEntityPrefab, leaderboardEntityHolder);
+                if (!entities.Any(e => e.ClientId == changeEvent.Value.ClientId))
+                {
+                    LeaderboardEntity leaderboardEntity = Instantiate(leaderboardEntityPrefab, leaderboardEntityHolder);
+
+                    leaderboardEntity.Initialise(changeEvent.Value.ClientId, changeEvent.Value.PlayerName, changeEvent.Value.Kills, changeEvent.Value.Deaths);
+
+                    entities.Add(leaderboardEntity);
+                }
+                break;
+            case NetworkListEvent<LeaderboardEntityState>.EventType.Remove:
+                LeaderboardEntity entityToRemove = entities.FirstOrDefault(e => e.ClientId == changeEvent.Value.ClientId);
+
+                if (entityToRemove != null)
+                {
+                    entityToRemove.transform.SetParent(null);
+                    Destroy(entityToRemove.gameObject);
+                    entities.Remove(entityToRemove);
+                }
+                break;
+            case NetworkListEvent<LeaderboardEntityState>.EventType.Value:
+                LeaderboardEntity entityToUpdate = entities.FirstOrDefault(e => e.ClientId == changeEvent.Value.ClientId);
+
+                if (entityToUpdate != null)
+                {
+                    entityToUpdate.UpdateDeaths(changeEvent.Value.Deaths);
+                    entityToUpdate.UpdateKills(changeEvent.Value.Kills);
+                }
                 break;
         }
     }
