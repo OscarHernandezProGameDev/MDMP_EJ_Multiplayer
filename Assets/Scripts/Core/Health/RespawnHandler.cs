@@ -8,7 +8,7 @@ public class RespawnHandler : NetworkBehaviour
 {
     [SerializeField] private NetworkObject playerPrefab;
     [SerializeField] private float respawnTime = 2f;
-    [SerializeField] private Stats stats;
+    [SerializeField] private Stats Statistics;
 
     public override void OnNetworkSpawn()
     {
@@ -45,18 +45,46 @@ public class RespawnHandler : NetworkBehaviour
 
     private void HandlePlayerDied(SetPlayerData player)
     {
-        stats.HandlerPlayerDeath(player.OwnerClientId);
-        Destroy(player.gameObject);
+        Statistics.HandlerPlayerDeath(player.OwnerClientId);
+        player.gameObject.SetActive(false);
 
-        StartCoroutine(RespawnPlayer(player.OwnerClientId));
+        StartCoroutine(RespawnPlayer(player));
     }
 
-    IEnumerator RespawnPlayer(ulong ownerClientId)
+    IEnumerator RespawnPlayer(SetPlayerData player)
     {
+        NetworkObject playerInstance = player.gameObject.GetComponent<NetworkObject>();
+        ulong previousOwnerClientId = playerInstance.OwnerClientId;
+
+        playerInstance.GetComponent<ClientNetwordTransform>().Interpolate = false;
+
+        // Le sacamos la propia identidad a nuestro jugador. Ahora es el servidor el dueño de este objeto
+        playerInstance.RemoveOwnership();
+
+        playerInstance.transform.position = SpawnPoint.GetRandomSpawnPosition();
+
         yield return new WaitForSeconds(respawnTime);
 
-        NetworkObject playerInstance = Instantiate(playerPrefab, SpawnPoint.GetRandomSpawnPosition(), Quaternion.identity);
+        playerInstance.gameObject.SetActive(true);
+        playerInstance.GetComponent<ClientNetwordTransform>().Interpolate = true;
 
-        playerInstance.SpawnAsPlayerObject(ownerClientId);
+        StartCoroutine(ChangeOwershipBack(playerInstance, previousOwnerClientId));
+    }
+
+    private IEnumerator ChangeOwershipBack(NetworkObject playerInstance, ulong previousOwnerClientId)
+    {
+        ResetHealth(playerInstance);
+
+        yield return new WaitForSeconds(.5f);
+
+        playerInstance.ChangeOwnership(previousOwnerClientId); // Le volvemos a dar la propieda
+    }
+
+    private static void ResetHealth(NetworkObject playerInstance)
+    {
+        Health health = playerInstance.GetComponent<Health>();
+
+        health.currentHealth.Value = health.maxHealth;
+        health.isDead = false;
     }
 }

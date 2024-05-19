@@ -28,11 +28,11 @@ public class Stats : MonoBehaviour
     {
         if (!DeathsStats.ContainsKey(ownerId))
         {
-            DeathsStats[ownerId].Value++;
+            DeathsStats[ownerId] = new NetworkVariable<int>(0);
         }
         if (!KillsStats.ContainsKey(ownerId))
         {
-            KillsStats[ownerId].Value++;
+            KillsStats[ownerId] = new NetworkVariable<int>(0);
         }
     }
 }

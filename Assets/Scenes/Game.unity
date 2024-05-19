@@ -75769,7 +75769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 958826905206391515, guid: 0da101f21a9d0647e859392a2e4f6a34, type: 3}
   respawnTime: 2
-  stats: {fileID: 1628008598}
+  Statistics: {fileID: 1628008598}
 --- !u!4 &1655221786
 Transform:
   m_ObjectHideFlags: 0

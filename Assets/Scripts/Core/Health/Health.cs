@@ -10,7 +10,7 @@ public class Health : NetworkBehaviour
 
     public NetworkVariable<int> currentHealth = new NetworkVariable<int>();
 
-    private bool isDead;
+    public bool isDead;
 
     public event Action<Health> OnDie;
 
