@@ -9,6 +9,7 @@ public class Leaderboard : NetworkBehaviour
 {
     [SerializeField] private Transform leaderboardEntityHolder;
     [SerializeField] private LeaderboardEntity leaderboardEntityPrefab;
+    [SerializeField] private Transform titleEntity;
 
     private NetworkList<LeaderboardEntityState> leaderboardEntities;
     private List<LeaderboardEntity> entities = new List<LeaderboardEntity>();
@@ -83,6 +84,16 @@ public class Leaderboard : NetworkBehaviour
                 }
                 break;
         }
+
+        // ordenando de mayor a menor por kills
+        entities.Sort((x, y) => y.Kills.CompareTo(x.Kills));
+
+        for (int i = 0; i < entities.Count; i++)
+        {
+            entities[i].transform.SetSiblingIndex(i);
+            entities[i].UpdateText();
+        }
+        titleEntity.transform.SetSiblingIndex(0);
     }
 
     public void HandlePlayerSpawned(SetPlayerData player)

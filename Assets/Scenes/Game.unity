@@ -77758,6 +77758,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderboardEntityHolder: {fileID: 593198358}
   leaderboardEntityPrefab: {fileID: 7185562525475017045, guid: 6241d8479ca44b545a6566804db5fb55, type: 3}
+  titleEntity: {fileID: 33899981289667368}
   <Statistics>k__BackingField: {fileID: 1628008598}
 --- !u!114 &1706513206
 MonoBehaviour:

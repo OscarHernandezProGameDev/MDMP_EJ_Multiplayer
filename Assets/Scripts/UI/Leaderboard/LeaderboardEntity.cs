@@ -38,9 +38,9 @@ public class LeaderboardEntity : MonoBehaviour
         UpdateText();
     }
 
-    private void UpdateText()
+    public void UpdateText()
     {
-        positionText.text = "1";
+        positionText.text = (transform.GetSiblingIndex() + 1).ToString();
         playerNameText.text = playerName.Value;
         killsText.text = Kills.ToString();
         deathsText.text = Deaths.ToString();
