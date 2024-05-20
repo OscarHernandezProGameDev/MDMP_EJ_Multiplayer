@@ -1,18 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HealingRespawner : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static HealingRespawner Instance { get; private set; }
+
+    private void Awake()
     {
-        
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetMedicKitToRespawn(SpawningHealth medicKit)
     {
-        
+        StartCoroutine(RespawmMedicKit(medicKit));
+    }
+
+    private IEnumerator RespawmMedicKit(SpawningHealth medicKit)
+    {
+        yield return new WaitForSeconds(3f);
+        medicKit.ResetStatus();
     }
 }
