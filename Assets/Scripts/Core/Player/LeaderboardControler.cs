@@ -8,7 +8,7 @@ public class LeaderboardControler : NetworkBehaviour
 {
     [Header("Referencias")]
     [SerializeField] private GameObject leaderboard;
-    [SerializeField] private InputReader inputReader;
+    private InputReader inputReader;
 
     public override void OnNetworkSpawn()
     {
@@ -16,7 +16,7 @@ public class LeaderboardControler : NetworkBehaviour
             return;
 
         inputReader.OnLeaderboardEvent += HandleLeaderboard;
-        leaderboard=FindAnyObjectByType<Leaderboard>().gameObject;
+        leaderboard = FindAnyObjectByType<Leaderboard>().gameObject;
     }
 
     public override void OnNetworkDespawn()
