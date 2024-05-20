@@ -12,6 +12,7 @@ public class InputReader : ScriptableObject, IPlayerActions
     public event Action<bool> OnFireEvent;
     public event Action<Vector3> OnMoveEvent;
     public event Action<bool> OnAimEvent;
+    public event Action<bool> OnLeaderboardEvent;
     #endregion
 
     void OnEnable()
@@ -56,6 +57,18 @@ public class InputReader : ScriptableObject, IPlayerActions
         else if (context.canceled)
         {
             OnAimEvent?.Invoke(false);
+        }
+    }
+
+    public void OnLeaderboard(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnLeaderboardEvent?.Invoke(true);
+        }
+        else if (context.canceled)
+        {
+            OnLeaderboardEvent?.Invoke(false);
         }
     }
 }

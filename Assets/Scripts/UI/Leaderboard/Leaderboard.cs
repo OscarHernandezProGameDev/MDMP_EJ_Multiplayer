@@ -33,8 +33,10 @@ public class Leaderboard : NetworkBehaviour
 
             SetPlayerData.OnPlayerSpawned += HandlePlayerSpawned;
             SetPlayerData.OnPlayerDespawned += HandlePlayerDespawned;
-
         }
+
+        if (IsOwner)
+            gameObject.SetActive(false);
     }
 
     public override void OnNetworkDespawn()
