@@ -7,8 +7,8 @@ using UnityEngine.UIElements;
 public class LeaderboardControler : NetworkBehaviour
 {
     [Header("Referencias")]
-    [SerializeField] private GameObject leaderboard;
-    private InputReader inputReader;
+    [SerializeField] private InputReader inputReader;
+    private GameObject leaderboard;
 
     public override void OnNetworkSpawn()
     {
@@ -16,7 +16,8 @@ public class LeaderboardControler : NetworkBehaviour
             return;
 
         inputReader.OnLeaderboardEvent += HandleLeaderboard;
-        leaderboard = FindAnyObjectByType<Leaderboard>().gameObject;
+        leaderboard = FindAnyObjectByType<Leaderboard>().transform.GetChild(0).gameObject;
+        leaderboard.SetActive(false);
     }
 
     public override void OnNetworkDespawn()

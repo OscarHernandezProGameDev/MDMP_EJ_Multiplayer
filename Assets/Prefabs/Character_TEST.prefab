@@ -824,7 +824,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9582999de38ca1540886492d0290ed85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leaderboard: {fileID: 0}
   inputReader: {fileID: 11400000, guid: 53e916698d421eb68b6522df1cb326aa, type: 2}
 --- !u!1 &1326360802897878
 GameObject:

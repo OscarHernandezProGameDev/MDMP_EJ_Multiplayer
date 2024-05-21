@@ -35,8 +35,8 @@ public class Leaderboard : NetworkBehaviour
             SetPlayerData.OnPlayerDespawned += HandlePlayerDespawned;
         }
 
-        if (IsOwner)
-            gameObject.SetActive(false);
+        //if (IsOwner)
+        //    gameObject.SetActive(false);
     }
 
     public override void OnNetworkDespawn()
@@ -161,6 +161,9 @@ public class Leaderboard : NetworkBehaviour
     public void HandlePlayerDespawned(SetPlayerData player)
     {
         if (leaderboardEntities == null)
+            return;
+
+        if (IsServer && player.OwnerClientId == OwnerClientId)
             return;
 
         foreach (var entity in leaderboardEntities)
