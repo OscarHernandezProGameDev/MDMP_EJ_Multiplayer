@@ -13,6 +13,12 @@ public enum GameMode
     Default
 }
 
+public enum GameQueue
+{
+    Solo,
+    Team
+}
+
 [Serializable]
 public class UserData
 {
