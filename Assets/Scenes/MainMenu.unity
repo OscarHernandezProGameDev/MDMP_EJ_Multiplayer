@@ -1716,7 +1716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joinCodeField: {fileID: 1323278016}
-  findMatchmakingText: {fileID: 0}
+  findMatchmakingText: {fileID: 1002333869}
   queueStatusText: {fileID: 1289237334}
   queueStatusTimerText: {fileID: 224260826}
 --- !u!1 &1002333867
