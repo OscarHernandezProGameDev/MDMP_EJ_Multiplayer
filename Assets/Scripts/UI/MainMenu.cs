@@ -19,7 +19,7 @@ public class MainMenu : MonoBehaviour
         queueStatusTimerText.text = string.Empty;
     }
 
-    public void FindMatchButtonPressed()
+    public async void FindMatchButtonPressed()
     {
         if (isMatchmaking)
             return;
@@ -28,7 +28,7 @@ public class MainMenu : MonoBehaviour
         {
             queueStatusText.text = "Searching...";
             isCancelling = true;
-            // cancel matchmaking
+            await ClientSingleton.Instance.GameManager.CancelMatchmakingAsync();
             isCancelling = false;
             isMatchmaking = false;
             findMatchmakingText.text = "Find Match";
@@ -36,9 +36,33 @@ public class MainMenu : MonoBehaviour
 
             return;
         }
+
+        ClientSingleton.Instance.GameManager.MatchmakeAsync(OnMatchmakeResponse);
         findMatchmakingText.text = "cancel";
         queueStatusText.text = "Searching...";
         isMatchmaking = true;
+    }
+
+    private void OnMatchmakeResponse(MatchmakerPollingResult result)
+    {
+        switch (result)
+        {
+            case MatchmakerPollingResult.Success:
+                queueStatusText.text = "Connecting ...";
+                break;
+            case MatchmakerPollingResult.TicketCreationError:
+                queueStatusText.text = "There was an error creating your ticket";
+                break;
+            case MatchmakerPollingResult.TicketCancellationError:
+                queueStatusText.text = "There was an error cancelling your ticket";
+                break;
+            case MatchmakerPollingResult.TicketRetrievalError:
+                queueStatusText.text = "There was an error retrieving your ticket";
+                break;
+            case MatchmakerPollingResult.MatchAssignmentError:
+                queueStatusText.text = "There was an error assigning to match";
+                break;
+        }
     }
 
     public async void StartHost()

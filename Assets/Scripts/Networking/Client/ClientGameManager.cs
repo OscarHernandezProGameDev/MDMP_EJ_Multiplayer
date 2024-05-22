@@ -33,13 +33,15 @@ public class ClientGameManager : IDisposable
         AuthState authState = await AuthenticationManager.DoAuthAsync();
 
         if (authState == AuthState.Authenticated)
-            return true;
-
-        userData = new UserData
         {
-            userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
-            userAuthId = AuthenticationService.Instance.PlayerId
-        };
+            userData = new UserData
+            {
+                userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
+                userAuthId = AuthenticationService.Instance.PlayerId
+            };
+
+            return true;
+        }
 
         return false;
     }
@@ -75,6 +77,7 @@ public class ClientGameManager : IDisposable
         RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
 
         transport.SetRelayServerData(relayServerData);
+
         ConnectClient();
     }
 
@@ -88,7 +91,7 @@ public class ClientGameManager : IDisposable
         NetworkManager.Singleton.StartClient();
     }
 
-    private async void MatchmakeAsync(Action<MatchmakerPollingResult> onMatchmakeResponse)
+    public async void MatchmakeAsync(Action<MatchmakerPollingResult> onMatchmakeResponse)
     {
         if (matchmaker.IsMatchmaking)
             return;
@@ -108,6 +111,11 @@ public class ClientGameManager : IDisposable
         }
 
         return matchmakingResult.result;
+    }
+
+    public async Task CancelMatchmakingAsync()
+    {
+        await matchmaker.CancelMatchmaking();
     }
 
     public void Disconnect()
