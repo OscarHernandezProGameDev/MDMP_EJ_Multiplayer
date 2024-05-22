@@ -49,6 +49,15 @@ public class ClientGameManager : IDisposable
         SceneManager.LoadScene(MainMenu);
     }
 
+    private void StartClient(string ip, int port)
+    {
+        UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+
+        transport.SetConnectionData(ip, (ushort)port);
+
+        ConnectClient();
+    }
+
     public async Task StartClientAsync(string joinCode)
     {
         try
@@ -66,7 +75,11 @@ public class ClientGameManager : IDisposable
         RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
 
         transport.SetRelayServerData(relayServerData);
+        ConnectClient();
+    }
 
+    private void ConnectClient()
+    {
         string payload = JsonUtility.ToJson(userData);
         byte[] payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
 
@@ -75,12 +88,22 @@ public class ClientGameManager : IDisposable
         NetworkManager.Singleton.StartClient();
     }
 
+    private async void MatchmakeAsync(Action<MatchmakerPollingResult> onMatchmakeResponse)
+    {
+        if (matchmaker.IsMatchmaking)
+            return;
+
+        MatchmakerPollingResult matchmakingResult = await GetMatchAsync();
+        onMatchmakeResponse?.Invoke(matchmakingResult);
+    }
+
     private async Task<MatchmakerPollingResult> GetMatchAsync()
     {
         MatchmakingResult matchmakingResult = await matchmaker.Matchmake(userData);
 
         if (matchmakingResult.result == MatchmakerPollingResult.Success)
         {
+            StartClient(matchmakingResult.ip, matchmakingResult.port);
             //return MatchmakerPollingResult.Success;
         }
 
