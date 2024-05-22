@@ -6,6 +6,9 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private TMP_InputField joinCodeField;
+    [SerializeField] private TMP_Text findMatchmakingText;
+    [SerializeField] private TMP_Text queueStatusText;
+    [SerializeField] private TMP_Text queueStatusTimerText;
 
     public async void StartHost()
     {
