@@ -35,6 +35,9 @@ public class ServerGameManager : IDisposable
             if (matchmakerPayload != null)
             {
                 await StartBackFililAsync(matchmakerPayload);
+
+                networkServer.OnUserJoined += UserJoined;
+                networkServer.OnUserLeft += UserLeft;
             }
             else
                 Debug.LogWarning("Getting the matchmaker payload timed out");
@@ -67,6 +70,37 @@ public class ServerGameManager : IDisposable
             await backfiller.BeginBackfilling();
     }
 
+    private void UserJoined(UserData user)
+    {
+        backfiller.AddPlayerToMatch(user);
+        multiplayAllocationService.AddPlayer();
+
+        if (!backfiller.NeedsPlayers() && backfiller.IsBackfilling)
+            _ = backfiller.StopBackfill();
+    }
+
+    private void UserLeft(UserData user)
+    {
+        int playerCount = backfiller.RemovePlayerFromMatch(user.userAuthId);
+        //multiplayAllocationService.RemovePlayer();
+        if (playerCount <= 0)
+        {
+            CloseServerAsync();
+
+            return;
+        }
+
+        if (backfiller.NeedsPlayers() && !backfiller.IsBackfilling)
+            _ = backfiller.BeginBackfilling();
+    }
+
+    private async void CloseServerAsync()
+    {
+        await backfiller.StopBackfill();
+        Dispose();
+        Application.Quit();
+    }
+
     private async Task<MatchmakingResults> GetMatchmakerPayloadAsync()
     {
         Task<MatchmakingResults> matchmakerPayloadTask = multiplayAllocationService.SubscribeAndAwaitMatchmakerAllocation();
@@ -79,5 +113,13 @@ public class ServerGameManager : IDisposable
 
     public void Dispose()
     {
+        if (networkServer != null)
+        {
+            networkServer.OnUserJoined -= UserJoined;
+            networkServer.OnUserLeft -= UserLeft;
+        }
+        backfiller?.Dispose();
+        multiplayAllocationService?.Dispose();
+        networkServer?.Dispose();
     }
 }

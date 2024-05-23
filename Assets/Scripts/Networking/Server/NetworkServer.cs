@@ -14,6 +14,9 @@ public class NetworkServer : IDisposable
 
     public Action<string> OnClientLeft;
 
+    public Action<UserData> OnUserJoined;
+    public Action<UserData> OnUserLeft;
+
     public NetworkServer(NetworkManager networkManager)
     {
         _networkManager = networkManager;
@@ -37,6 +40,8 @@ public class NetworkServer : IDisposable
 
         clientIdToAuth[request.ClientNetworkId] = userData.userAuthId;
         authIdToUserData[userData.userAuthId] = userData;
+
+        OnUserJoined?.Invoke(userData);
 
         response.Approved = true;
         response.Position = SpawnPoint.GetRandomSpawnPosition();
@@ -65,10 +70,10 @@ public class NetworkServer : IDisposable
         if (clientIdToAuth.TryGetValue(clientId, out string authId))
         {
             clientIdToAuth.Remove(clientId);
+            OnUserLeft?.Invoke(authIdToUserData[authId]);
             authIdToUserData.Remove(authId);
+            OnClientLeft?.Invoke(authId);
         }
-
-        OnClientLeft?.Invoke(authId);
     }
 
     public void Dispose()
