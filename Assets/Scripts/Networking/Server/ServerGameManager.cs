@@ -21,7 +21,8 @@ public class ServerGameManager : IDisposable
         this.serverIP = serverIP;
         this.serverPort = serverPort;
         this.serverQueryPort = serverQueryPort;
-        this.NetworkServer = new NetworkServer(networkManager);
+        NetworkServer = new NetworkServer(networkManager);
+        multiplayAllocationService = new MultiplayAllocationService();
     }
 
     public async Task StartGameServerAsync()

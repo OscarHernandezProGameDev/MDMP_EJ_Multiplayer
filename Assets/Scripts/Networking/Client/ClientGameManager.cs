@@ -91,7 +91,7 @@ public class ClientGameManager : IDisposable
         NetworkManager.Singleton.StartClient();
     }
 
-    public async void MatchmakeAsync(Action<MatchmakerPollingResult> onMatchmakeResponse)
+    public async Task MatchmakeAsync(Action<MatchmakerPollingResult> onMatchmakeResponse)
     {
         if (matchmaker.IsMatchmaking)
             return;

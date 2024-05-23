@@ -37,7 +37,7 @@ public class MainMenu : MonoBehaviour
             return;
         }
 
-        ClientSingleton.Instance.GameManager.MatchmakeAsync(OnMatchmakeResponse);
+        await ClientSingleton.Instance.GameManager.MatchmakeAsync(OnMatchmakeResponse);
         findMatchmakingText.text = "cancel";
         queueStatusText.text = "Searching...";
         isMatchmaking = true;
