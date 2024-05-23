@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class ApplicationController : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private ClientSingleton clientPrefab;
     [SerializeField] private HostSingleton hostPrefab;
     [SerializeField] private ServerSingleton serverPrefab;
+    [SerializeField] private ApplicationData applicationData;
 
     async void Start()
     {
@@ -23,6 +25,8 @@ public class ApplicationController : MonoBehaviour
     {
         if (isDedicateServer)
         {
+            applicationData = new ApplicationData();
+
             ServerSingleton serverSingleton = Instantiate(serverPrefab);
 
             await serverSingleton.CreateServerAsync();

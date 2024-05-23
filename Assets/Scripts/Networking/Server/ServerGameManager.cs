@@ -12,7 +12,7 @@ public class ServerGameManager : IDisposable
     private string serverIP;
     private int serverPort;
     private int serverQueryPort;
-    private NetworkServer networkServer;
+    public NetworkServer NetworkServer;
     private MultiplayAllocationService multiplayAllocationService;
     private MatchplayBackfiller backfiller;
 
@@ -21,7 +21,7 @@ public class ServerGameManager : IDisposable
         this.serverIP = serverIP;
         this.serverPort = serverPort;
         this.serverQueryPort = serverQueryPort;
-        this.networkServer = new NetworkServer(networkManager);
+        this.NetworkServer = new NetworkServer(networkManager);
     }
 
     public async Task StartGameServerAsync()
@@ -36,8 +36,8 @@ public class ServerGameManager : IDisposable
             {
                 await StartBackFililAsync(matchmakerPayload);
 
-                networkServer.OnUserJoined += UserJoined;
-                networkServer.OnUserLeft += UserLeft;
+                NetworkServer.OnUserJoined += UserJoined;
+                NetworkServer.OnUserLeft += UserLeft;
             }
             else
                 Debug.LogWarning("Getting the matchmaker payload timed out");
@@ -47,7 +47,7 @@ public class ServerGameManager : IDisposable
             Debug.LogWarning(ex);
         }
 
-        if (!networkServer.OpenConnection(serverIP, serverPort))
+        if (!NetworkServer.OpenConnection(serverIP, serverPort))
         {
             Debug.LogWarning("NetworkServer did not start as expected");
 
@@ -113,13 +113,13 @@ public class ServerGameManager : IDisposable
 
     public void Dispose()
     {
-        if (networkServer != null)
+        if (NetworkServer != null)
         {
-            networkServer.OnUserJoined -= UserJoined;
-            networkServer.OnUserLeft -= UserLeft;
+            NetworkServer.OnUserJoined -= UserJoined;
+            NetworkServer.OnUserLeft -= UserLeft;
         }
         backfiller?.Dispose();
         multiplayAllocationService?.Dispose();
-        networkServer?.Dispose();
+        NetworkServer?.Dispose();
     }
 }

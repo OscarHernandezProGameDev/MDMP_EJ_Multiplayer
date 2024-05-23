@@ -19,8 +19,16 @@ public class SetPlayerData : NetworkBehaviour
     {
         if (IsServer)
         {
-            UserData userData = HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
+            UserData userData = null;
 
+            if (IsHost)
+            {
+                userData = HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
+            }
+            else
+            {
+                userData = ServerSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
+            }
             playerName.Value = userData.userName;
 
             OnPlayerSpawned?.Invoke(this);
