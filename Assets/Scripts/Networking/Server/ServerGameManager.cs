@@ -14,6 +14,7 @@ public class ServerGameManager : IDisposable
     private int serverQueryPort;
     private NetworkServer networkServer;
     private MultiplayAllocationService multiplayAllocationService;
+    private MatchplayBackfiller backfiller;
 
     public ServerGameManager(string serverIP, int serverPort, int serverQueryPort, NetworkManager networkManager)
     {
@@ -33,7 +34,7 @@ public class ServerGameManager : IDisposable
 
             if (matchmakerPayload != null)
             {
-                // backfiling
+                await StartBackFililAsync(matchmakerPayload);
             }
             else
                 Debug.LogWarning("Getting the matchmaker payload timed out");
@@ -56,6 +57,14 @@ public class ServerGameManager : IDisposable
         {
             await Task.Delay(10);
         }
+    }
+
+    private async Task StartBackFililAsync(MatchmakingResults payload)
+    {
+        backfiller = new MatchplayBackfiller($"{serverIP}:{serverPort}", payload.QueueName, payload.MatchProperties, 20);
+
+        if (backfiller.NeedsPlayers())
+            await backfiller.BeginBackfilling();
     }
 
     private async Task<MatchmakingResults> GetMatchmakerPayloadAsync()
