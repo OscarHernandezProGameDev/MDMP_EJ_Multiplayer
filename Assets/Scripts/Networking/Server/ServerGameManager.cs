@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
+using Unity.Services.Matchmaker.Models;
 
 public class ServerGameManager : IDisposable
 {
@@ -26,6 +27,22 @@ public class ServerGameManager : IDisposable
     {
         await multiplayAllocationService.BeginServerCheck();
 
+        try
+        {
+            MatchmakingResults matchmakerPayload = await GetMatchmakerPayloadAsync();
+
+            if (matchmakerPayload != null)
+            {
+                // backfiling
+            }
+            else
+                Debug.LogWarning("Getting the matchmaker payload timed out");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning(ex);
+        }
+
         if (!networkServer.OpenConnection(serverIP, serverPort))
         {
             Debug.LogWarning("NetworkServer did not start as expected");
@@ -39,6 +56,16 @@ public class ServerGameManager : IDisposable
         {
             await Task.Delay(10);
         }
+    }
+
+    private async Task<MatchmakingResults> GetMatchmakerPayloadAsync()
+    {
+        Task<MatchmakingResults> matchmakerPayloadTask = multiplayAllocationService.SubscribeAndAwaitMatchmakerAllocation();
+
+        if (await Task.WhenAny(matchmakerPayloadTask, Task.Delay(20000)) == matchmakerPayloadTask)
+            return matchmakerPayloadTask.Result;
+
+        return null;
     }
 
     public void Dispose()
