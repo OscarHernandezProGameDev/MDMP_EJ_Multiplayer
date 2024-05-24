@@ -21,12 +21,12 @@ public class MainMenu : MonoBehaviour
 
     public async void FindMatchButtonPressed()
     {
-        if (isMatchmaking)
+        if (isCancelling)
             return;
 
         if (isMatchmaking)
         {
-            queueStatusText.text = "Searching...";
+            queueStatusText.text = "Cancelling...";
             isCancelling = true;
             await ClientSingleton.Instance.GameManager.CancelMatchmakingAsync();
             isCancelling = false;
@@ -37,7 +37,7 @@ public class MainMenu : MonoBehaviour
             return;
         }
 
-        await ClientSingleton.Instance.GameManager.MatchmakeAsync(OnMatchmakeResponse);
+        ClientSingleton.Instance.GameManager.MatchmakeAsync(OnMatchmakeResponse);
         findMatchmakingText.text = "cancel";
         queueStatusText.text = "Searching...";
         isMatchmaking = true;
