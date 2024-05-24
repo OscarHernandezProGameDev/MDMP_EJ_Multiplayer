@@ -10,7 +10,7 @@ public class LobbyItem : MonoBehaviour
     [SerializeField] private TMP_Text lobbyPlayersText;
 
     private LobbiesList lobbiesList;
-    Lobby lobby;
+    private Lobby lobby;
 
     public void Initialise(LobbiesList lobbiesList, Lobby lobby)
     {

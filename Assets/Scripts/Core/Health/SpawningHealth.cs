@@ -8,8 +8,7 @@ public class SpawningHealth : Healing
 
     public override void Collect(Health health)
     {
-        if (isCollected)
-            return;
+        if (isCollected) { return; }
 
         isCollected = true;
 
@@ -19,10 +18,11 @@ public class SpawningHealth : Healing
     public override void ResetStatus()
     {
         if (IsOwnedByServer)
+        {
             Spawn();
+        }
 
-        if (!isCollected)
-            return;
+        if (!isCollected) { return; }
 
         isCollected = false;
     }

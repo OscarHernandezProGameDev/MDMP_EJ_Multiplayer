@@ -3,31 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using static Unity.Networking.Transport.Utilities.ReliableUtility;
 
 public class RespawnHandler : NetworkBehaviour
 {
     [SerializeField] private NetworkObject playerPrefab;
-    [SerializeField] private float respawnTime = 2f;
+    [SerializeField] private float respawningTime = 2f;
     [SerializeField] private Stats Statistics;
 
     public override void OnNetworkSpawn()
     {
-        if (!IsServer)
-            return;
+        if (!IsServer) { return; }
 
         SetPlayerData[] players = FindObjectsByType<SetPlayerData>(FindObjectsSortMode.None);
-
         foreach (SetPlayerData player in players)
+        {
             HandlePlayerSpawned(player);
+        }
 
         SetPlayerData.OnPlayerSpawned += HandlePlayerSpawned;
         SetPlayerData.OnPlayerDespawned += HandlePlayerDespawned;
     }
 
-    override public void OnNetworkDespawn()
+    public override void OnNetworkDespawn()
     {
-        if (!IsServer)
-            return;
+        if (!IsServer) { return; }
 
         SetPlayerData.OnPlayerSpawned -= HandlePlayerSpawned;
         SetPlayerData.OnPlayerDespawned -= HandlePlayerDespawned;
@@ -35,55 +35,56 @@ public class RespawnHandler : NetworkBehaviour
 
     private void HandlePlayerSpawned(SetPlayerData player)
     {
-        player.Health.OnDie += _ => HandlePlayerDied(player);
+        player.Health.OnDie += (health) => HandlePlayerDie(player);
     }
 
     private void HandlePlayerDespawned(SetPlayerData player)
     {
-        player.Health.OnDie -= _ => HandlePlayerDied(player);
+        player.Health.OnDie -= (health) => HandlePlayerDie(player);
     }
 
-    private void HandlePlayerDied(SetPlayerData player)
+    private void HandlePlayerDie(SetPlayerData player)
     {
-        Statistics.HandlerPlayerDeath(player.OwnerClientId);
+        Statistics.HandlePlayerDeath(player.OwnerClientId);
+
         player.gameObject.SetActive(false);
 
         StartCoroutine(RespawnPlayer(player));
     }
 
-    IEnumerator RespawnPlayer(SetPlayerData player)
+    private IEnumerator RespawnPlayer(SetPlayerData player)
     {
-        NetworkObject playerInstance = player.gameObject.GetComponent<NetworkObject>();
-        ulong previousOwnerClientId = playerInstance.OwnerClientId;
+        NetworkObject playerInstance = player.GetComponent<NetworkObject>();
 
-        playerInstance.GetComponent<ClientNetwordTransform>().Interpolate = false;
+        ulong previousOwnerId = player.OwnerClientId;
 
-        // Le sacamos la propia identidad a nuestro jugador. Ahora es el servidor el dueño de este objeto
+        playerInstance.GetComponent<ClientNetworkTransform>().Interpolate = false;
+
         playerInstance.RemoveOwnership();
 
         playerInstance.transform.position = SpawnPoint.GetRandomSpawnPosition();
 
-        yield return new WaitForSeconds(respawnTime);
+        yield return new WaitForSeconds(respawningTime);
 
-        playerInstance.gameObject.SetActive(true);
-        playerInstance.GetComponent<ClientNetwordTransform>().Interpolate = true;
+        player.gameObject.SetActive(true);
 
-        StartCoroutine(ChangeOwershipBack(playerInstance, previousOwnerClientId));
+        playerInstance.GetComponent<ClientNetworkTransform>().Interpolate = true;
+
+        StartCoroutine(ChangeOwnershipBack(playerInstance, previousOwnerId));
     }
 
-    private IEnumerator ChangeOwershipBack(NetworkObject playerInstance, ulong previousOwnerClientId)
+    private IEnumerator ChangeOwnershipBack(NetworkObject playerInstance, ulong previousOwnerId)
     {
         ResetHealth(playerInstance);
 
         yield return new WaitForSeconds(.5f);
 
-        playerInstance.ChangeOwnership(previousOwnerClientId); // Le volvemos a dar la propieda
+        playerInstance.ChangeOwnership(previousOwnerId);
     }
 
-    private static void ResetHealth(NetworkObject playerInstance)
+    private void ResetHealth(NetworkObject playerInstance)
     {
         Health health = playerInstance.GetComponent<Health>();
-
         health.currentHealth.Value = health.maxHealth;
         health.isDead = false;
     }

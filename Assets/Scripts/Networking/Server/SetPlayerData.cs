@@ -9,8 +9,10 @@ using UnityEngine;
 public class SetPlayerData : NetworkBehaviour
 {
     [SerializeField] private TMP_Text playerNameText;
-    [field: SerializeField] public Health Health { get; private set; }
     public NetworkVariable<FixedString32Bytes> playerName = new NetworkVariable<FixedString32Bytes>();
+    public NetworkVariable<int> TeamIndex = new NetworkVariable<int>();
+
+    [field: SerializeField] public Health Health { get; private set; }
 
     public static event Action<SetPlayerData> OnPlayerSpawned;
     public static event Action<SetPlayerData> OnPlayerDespawned;
@@ -29,7 +31,9 @@ public class SetPlayerData : NetworkBehaviour
             {
                 userData = ServerSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
             }
+
             playerName.Value = userData.userName;
+            TeamIndex.Value = userData.teamIndex;
 
             OnPlayerSpawned?.Invoke(this);
         }
@@ -38,9 +42,9 @@ public class SetPlayerData : NetworkBehaviour
         playerName.OnValueChanged += HandlePlayerNameChanged;
     }
 
-    private void HandlePlayerNameChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
+    private void HandlePlayerNameChanged(FixedString32Bytes previousName, FixedString32Bytes newName)
     {
-        playerNameText.text = newValue.ToString();
+        playerNameText.text = newName.ToString();
     }
 
     public override void OnNetworkDespawn()

@@ -10,7 +10,13 @@ public abstract class Ammo : NetworkBehaviour
 
     public abstract int Collect();
 
-    public void SetValue(int value) => ammoValue = value;
+    public void SetValue(int value)
+    {
+        ammoValue = value;
+    }
 
-    protected void Show(bool status) => gameObject.SetActive(status);
+    protected void Show(bool status)
+    {
+        gameObject.SetActive(status);
+    }
 }

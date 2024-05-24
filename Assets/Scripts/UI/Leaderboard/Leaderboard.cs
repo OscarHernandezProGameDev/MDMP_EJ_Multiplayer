@@ -7,44 +7,55 @@ using UnityEngine;
 
 public class Leaderboard : NetworkBehaviour
 {
-    [SerializeField] private Transform leaderboardEntityHolder;
-    [SerializeField] private LeaderboardEntity leaderboardEntityPrefab;
+    [SerializeField] private Transform leaderboadEntityHolder;
+    [SerializeField] private LeaderboardEntity leaderboadEntityPrefab;
     [SerializeField] private Transform titleEntity;
 
-    private NetworkList<LeaderboardEntityState> leaderboardEntities;
+    private NetworkList<leaderboardEntityState> leaderboardEntities;
     private List<LeaderboardEntity> entities = new List<LeaderboardEntity>();
 
     [field: SerializeField] public Stats Statistics { get; private set; }
+
+    private void Awake()
+    {
+        leaderboardEntities = new NetworkList<leaderboardEntityState>();
+    }
 
     public override void OnNetworkSpawn()
     {
         if (IsClient)
         {
-            leaderboardEntities.OnListChanged += HandleLeaderboardEntitiesChanged;
-            foreach (var entity in leaderboardEntities)
-                HandleLeaderboardEntitiesChanged(new NetworkListEvent<LeaderboardEntityState> { Type = NetworkListEvent<LeaderboardEntityState>.EventType.Add, Value = entity });
+            leaderboardEntities.OnListChanged += HandleLeaderboadEntitiesChanged;
+            foreach (leaderboardEntityState entity in leaderboardEntities)
+            {
+                HandleLeaderboadEntitiesChanged(new NetworkListEvent<leaderboardEntityState>
+                {
+                    Type = NetworkListEvent<leaderboardEntityState>.EventType.Add,
+                    Value = entity
+                });
+            }
         }
+
         if (IsServer)
         {
             SetPlayerData[] players = FindObjectsByType<SetPlayerData>(FindObjectsSortMode.None);
-
             foreach (SetPlayerData player in players)
+            {
                 HandlePlayerSpawned(player);
+            }
 
             SetPlayerData.OnPlayerSpawned += HandlePlayerSpawned;
             SetPlayerData.OnPlayerDespawned += HandlePlayerDespawned;
         }
-
-        //if (IsOwner)
-        //    gameObject.SetActive(false);
     }
 
     public override void OnNetworkDespawn()
     {
         if (IsClient)
         {
-            leaderboardEntities.OnListChanged -= HandleLeaderboardEntitiesChanged;
+            leaderboardEntities.OnListChanged -= HandleLeaderboadEntitiesChanged;
         }
+
         if (IsServer)
         {
             SetPlayerData.OnPlayerSpawned -= HandlePlayerSpawned;
@@ -52,23 +63,23 @@ public class Leaderboard : NetworkBehaviour
         }
     }
 
-    private void HandleLeaderboardEntitiesChanged(NetworkListEvent<LeaderboardEntityState> changeEvent)
+    private void HandleLeaderboadEntitiesChanged(NetworkListEvent<leaderboardEntityState> changeEvent)
     {
         switch (changeEvent.Type)
         {
-            case NetworkListEvent<LeaderboardEntityState>.EventType.Add:
-                if (!entities.Any(e => e.ClientId == changeEvent.Value.ClientId))
+            case NetworkListEvent<leaderboardEntityState>.EventType.Add:
+                if (!entities.Any(x => x.ClientId == changeEvent.Value.ClientID))
                 {
-                    LeaderboardEntity leaderboardEntity = Instantiate(leaderboardEntityPrefab, leaderboardEntityHolder);
-
-                    leaderboardEntity.Initialise(changeEvent.Value.ClientId, changeEvent.Value.PlayerName, changeEvent.Value.Kills, changeEvent.Value.Deaths);
-
+                    LeaderboardEntity leaderboardEntity = Instantiate(leaderboadEntityPrefab, leaderboadEntityHolder);
+                    leaderboardEntity.Initialise(changeEvent.Value.ClientID,
+                        changeEvent.Value.PlayerName,
+                        changeEvent.Value.Deaths,
+                        changeEvent.Value.Kills);
                     entities.Add(leaderboardEntity);
                 }
                 break;
-            case NetworkListEvent<LeaderboardEntityState>.EventType.Remove:
-                LeaderboardEntity entityToRemove = entities.FirstOrDefault(e => e.ClientId == changeEvent.Value.ClientId);
-
+            case NetworkListEvent<leaderboardEntityState>.EventType.Remove:
+                LeaderboardEntity entityToRemove = entities.FirstOrDefault(x => x.ClientId == changeEvent.Value.ClientID);
                 if (entityToRemove != null)
                 {
                     entityToRemove.transform.SetParent(null);
@@ -76,9 +87,8 @@ public class Leaderboard : NetworkBehaviour
                     entities.Remove(entityToRemove);
                 }
                 break;
-            case NetworkListEvent<LeaderboardEntityState>.EventType.Value:
-                LeaderboardEntity entityToUpdate = entities.FirstOrDefault(e => e.ClientId == changeEvent.Value.ClientId);
-
+            case NetworkListEvent<leaderboardEntityState>.EventType.Value:
+                LeaderboardEntity entityToUpdate = entities.FirstOrDefault(x => x.ClientId == changeEvent.Value.ClientID);
                 if (entityToUpdate != null)
                 {
                     entityToUpdate.UpdateDeaths(changeEvent.Value.Deaths);
@@ -87,7 +97,6 @@ public class Leaderboard : NetworkBehaviour
                 break;
         }
 
-        // ordenando de mayor a menor por kills
         entities.Sort((x, y) => y.Kills.CompareTo(x.Kills));
 
         for (int i = 0; i < entities.Count; i++)
@@ -100,88 +109,75 @@ public class Leaderboard : NetworkBehaviour
 
     public void HandlePlayerSpawned(SetPlayerData player)
     {
-        ulong ownerId = player.OwnerClientId;
-
-        leaderboardEntities.Add(new LeaderboardEntityState
+        leaderboardEntities.Add(new leaderboardEntityState
         {
-            ClientId = ownerId,
+            ClientID = player.OwnerClientId,
             PlayerName = player.playerName.Value,
             Deaths = 0,
-            Kills = 0,
+            Kills = 0
         });
+
+        ulong ownerId = player.OwnerClientId;
 
         Statistics.AddPlayerToLists(ownerId);
 
-        Statistics.DeathsStats[ownerId].OnValueChanged += (oldDeaths, newDeaths) => HandleDeathsChanged(ownerId, newDeaths);
-        Statistics.KillsStats[ownerId].OnValueChanged += (oldKills, newKills) => HandleKillsChanged(ownerId, newKills);
+        Statistics.deathsStats[ownerId].OnValueChanged += (oldDeaths, newDeaths) => HandleDeathsChanged(ownerId, newDeaths);
+
+        Statistics.killsStats[ownerId].OnValueChanged += (oldKills, newKills) => HandleKillsChanged(ownerId, newKills);
     }
 
-    private void HandleDeathsChanged(ulong ownerClientId, int newDeaths)
+    private void HandleDeathsChanged(ulong ownerId, int newDeaths)
     {
         for (int i = 0; i < leaderboardEntities.Count; i++)
         {
-            var entity = leaderboardEntities[i];
+            if (leaderboardEntities[i].ClientID !=  ownerId) { continue; }
 
-            if (entity.ClientId == ownerClientId)
+            leaderboardEntities[i] = new leaderboardEntityState
             {
-                leaderboardEntities[i] = new LeaderboardEntityState
-                {
-                    ClientId = entity.ClientId,
-                    PlayerName = entity.PlayerName.Value,
-                    Deaths = newDeaths,
-                    Kills = entity.Kills,
-                };
+                ClientID = leaderboardEntities[i].ClientID,
+                PlayerName = leaderboardEntities[i].PlayerName.Value,
+                Deaths = newDeaths,
+                Kills = leaderboardEntities[i].Kills
+            };
 
-                return;
-            }
+            return;
         }
     }
 
-    private void HandleKillsChanged(ulong ownerClientId, int newKills)
+    private void HandleKillsChanged(ulong ownerId, int newKills)
     {
         for (int i = 0; i < leaderboardEntities.Count; i++)
         {
-            var entity = leaderboardEntities[i];
+            if (leaderboardEntities[i].ClientID != ownerId) { continue; }
 
-            if (entity.ClientId == ownerClientId)
+            leaderboardEntities[i] = new leaderboardEntityState
             {
-                leaderboardEntities[i] = new LeaderboardEntityState
-                {
-                    ClientId = entity.ClientId,
-                    PlayerName = entity.PlayerName.Value,
-                    Deaths = entity.Deaths,
-                    Kills = newKills,
-                };
+                ClientID = leaderboardEntities[i].ClientID,
+                PlayerName = leaderboardEntities[i].PlayerName.Value,
+                Deaths = leaderboardEntities[i].Deaths,
+                Kills = newKills,
+            };
 
-                return;
-            }
+            return;
         }
     }
 
     public void HandlePlayerDespawned(SetPlayerData player)
     {
-        if (leaderboardEntities == null)
-            return;
+        if (leaderboardEntities == null) { return; }
 
-        if (IsServer && player.OwnerClientId == OwnerClientId)
-            return;
+        if (IsServer && player.OwnerClientId == OwnerClientId) { return; }
 
-        foreach (var entity in leaderboardEntities)
+        foreach (leaderboardEntityState entity in leaderboardEntities)
         {
-            if (entity.ClientId == player.OwnerClientId)
-            {
-                leaderboardEntities.Remove(entity);
+            if (entity.ClientID != player.OwnerClientId) { continue; }
 
-                break;
-            }
+            leaderboardEntities.Remove(entity);
+            break;
         }
 
-        Statistics.DeathsStats[player.OwnerClientId].OnValueChanged -= (oldDeaths, newDeaths) => HandleDeathsChanged(player.OwnerClientId, newDeaths);
-        Statistics.KillsStats[player.OwnerClientId].OnValueChanged -= (oldKills, newKills) => HandleKillsChanged(player.OwnerClientId, newKills);
-    }
+        Statistics.deathsStats[player.OwnerClientId].OnValueChanged -= (oldDeaths, newDeaths) => HandleDeathsChanged(player.OwnerClientId, newDeaths);
 
-    private void Awake()
-    {
-        leaderboardEntities = new NetworkList<LeaderboardEntityState>();
+        Statistics.killsStats[player.OwnerClientId].OnValueChanged -= (oldKills, newKills) => HandleKillsChanged(player.OwnerClientId, newKills);
     }
 }

@@ -3,45 +3,43 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    [Header("Referencias")]
+    [Header("References")]
     [SerializeField] private InputReader inputReader;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private Rigidbody rigidBody;
-    private Transform _mTransform;
+    private Transform _mTranform;
     private Transform mainCamera;
 
     [Header("Settings")]
     [SerializeField] private float movementSpeed = 5f;
     private float rotationSmoothVelocity;
-    private float rotationSmoothTime = 0.1f;
+    private float rotationSmoothTime = .1f;
 
     private Vector3 previousMovementInput;
 
     public override void OnNetworkSpawn()
     {
-        if (!IsOwner)
-            return;
+        if (!IsOwner) { return; }
 
         inputReader.OnMoveEvent += HandleMovement;
-        _mTransform = transform;
+        _mTranform = transform;
         mainCamera = Camera.main.transform;
     }
 
     public override void OnNetworkDespawn()
     {
-        if (!IsOwner)
-            return;
+        if (!IsOwner) { return; }
 
         inputReader.OnMoveEvent -= HandleMovement;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        if (!IsOwner)
-            return;
+        if (!IsOwner) { return; }
 
         Movement();
     }
@@ -58,17 +56,19 @@ public class PlayerMovement : NetworkBehaviour
 
         Vector3 direction = new Vector3(x, 0f, z).normalized;
 
-        if (direction.magnitude >= 0.1f)
+        if (direction.magnitude >= .1f)
         {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + mainCamera.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(_mTransform.eulerAngles.y, targetAngle, ref rotationSmoothVelocity, rotationSmoothTime);
+            float targeAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + mainCamera.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(_mTranform.eulerAngles.y, targeAngle, ref rotationSmoothVelocity, rotationSmoothTime);
 
-            if (!AimController.instance.isAimingStatus)
-                _mTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+            if (AimController.instance.isAimingStatus == false)
+            {
+                _mTranform.rotation = Quaternion.Euler(0f, angle, 0f);
+            }
 
-            Vector3 movementDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            //characterController.Move(movementDirection * (movementSpeed * Time.deltaTime));
-            rigidBody.position += movementDirection * (movementSpeed * Time.deltaTime);
+            Vector3 moveDirection = Quaternion.Euler(0f, targeAngle, 9f) * Vector3.forward;
+            //characterController.Move(moveDirection * (movementSpeed * Time.deltaTime));
+            rigidBody.position += moveDirection * (movementSpeed * Time.deltaTime);
         }
     }
 }

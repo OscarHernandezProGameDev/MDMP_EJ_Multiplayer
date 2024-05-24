@@ -6,11 +6,6 @@ public class SpawnPoint : MonoBehaviour
 {
     private static List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
 
-    public static Vector3 GetRandomSpawnPosition()
-    {
-        return spawnPoints.Count == 0 ? Vector3.zero : spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position;
-    }
-
     private void OnEnable()
     {
         spawnPoints.Add(this);
@@ -21,9 +16,15 @@ public class SpawnPoint : MonoBehaviour
         spawnPoints.Remove(this);
     }
 
+    public static Vector3 GetRandomSpawnPosition()
+    {
+        if (spawnPoints.Count == 0) return Vector3.zero;
+        return spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, 1f);
+        Gizmos.DrawSphere(transform.position, 1);
     }
 }

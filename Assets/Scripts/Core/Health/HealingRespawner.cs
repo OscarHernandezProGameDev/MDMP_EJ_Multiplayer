@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class HealingRespawner : MonoBehaviour
 {
-    public static HealingRespawner Instance { get; private set; }
+    public static HealingRespawner Instance;
 
     private void Awake()
     {
@@ -17,12 +17,13 @@ public class HealingRespawner : MonoBehaviour
 
     public void SetMedicKitToRespawn(SpawningHealth medicKit)
     {
-        StartCoroutine(RespawmMedicKit(medicKit));
+        StartCoroutine(RespawnMedicKit(medicKit));
     }
 
-    private IEnumerator RespawmMedicKit(SpawningHealth medicKit)
+    private IEnumerator RespawnMedicKit(SpawningHealth medicKit)
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3);
+
         medicKit.ResetStatus();
     }
 }

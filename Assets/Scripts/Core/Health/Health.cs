@@ -12,12 +12,11 @@ public class Health : NetworkBehaviour
 
     public bool isDead;
 
-    public event Action<Health> OnDie;
+    public Action<Health> OnDie;
 
     public override void OnNetworkSpawn()
     {
-        if (!IsServer)
-            return;
+        if (!IsServer) { return; }
 
         currentHealth.Value = maxHealth;
     }
@@ -27,18 +26,16 @@ public class Health : NetworkBehaviour
         ModifyHealth(-damageValue);
     }
 
-    public void RestoreHealth(int healthValue)
+    public void RestoreHealth(int healValue)
     {
-        ModifyHealth(healthValue);
+        ModifyHealth(healValue);
     }
 
     private void ModifyHealth(int value)
     {
-        if (isDead)
-            return;
+        if (isDead) { return; }
 
         int newHealth = currentHealth.Value + value;
-
         currentHealth.Value = Mathf.Clamp(newHealth, 0, maxHealth);
 
         if (currentHealth.Value == 0)

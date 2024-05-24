@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Services.Lobbies;
@@ -7,92 +6,66 @@ using UnityEngine;
 
 public class LobbiesList : MonoBehaviour
 {
-    [SerializeField] private Transform lobbyItemParent;
-    [SerializeField] private LobbyItem lobbyItemPrefab;
+	[SerializeField] private Transform lobbyItemParent;
+	[SerializeField] private LobbyItem lobbyItemPrefab;
+	[SerializeField] private MainMenu mainMenu;
 
-    private bool _isJoning = false;
-    private bool _isRefreshing = false;
+    private bool _isRefreshing;
 
     private void OnEnable()
     {
-        RefreshList();
+		RefreshList();
     }
 
-    public async void RefreshList()
-    {
-        if (_isRefreshing)
-            return;
+	public async void RefreshList()
+	{
+		if (_isRefreshing) { return; }
 
-        _isRefreshing = true;
+		_isRefreshing = true;
 
-        try
-        {
-            QueryLobbiesOptions options = new QueryLobbiesOptions()
-            {
-                Count = 25,
-                Filters = new List<QueryFilter>()
-                {
-                    new QueryFilter
-                    (
-                        field: QueryFilter.FieldOptions.AvailableSlots,
-                        op: QueryFilter.OpOptions.GT,
-                        value: "0"
-                    ),
-                    new QueryFilter
-                    (
-                        field:  QueryFilter.FieldOptions.IsLocked,
-                        op: QueryFilter.OpOptions.EQ,
-                        value: "0"
-                    )
-                }
-            };
+		try
+		{
+			QueryLobbiesOptions options = new QueryLobbiesOptions();
 
-            QueryResponse lobbies = await Lobbies.Instance.QueryLobbiesAsync(options);
+			options.Count = 25;
 
-            foreach (Transform child in lobbyItemParent)
-                Destroy(child.gameObject);
+			options.Filters = new List<QueryFilter>()
+			{
+				new QueryFilter(
+					field: QueryFilter.FieldOptions.AvailableSlots,
+					op: QueryFilter.OpOptions.GT,
+					value: "0"),
+				new QueryFilter(
+					field: QueryFilter.FieldOptions.IsLocked,
+					op: QueryFilter.OpOptions.EQ,
+					value: "0")
+			};
 
-            foreach (Lobby lobby in lobbies.Results)
-            {
-                LobbyItem lobbyItem = Instantiate(lobbyItemPrefab, lobbyItemParent);
+			QueryResponse lobbies = await Lobbies.Instance.QueryLobbiesAsync(options);
 
-                lobbyItem.Initialise(this, lobby);
-            }
+			foreach (Transform child in lobbyItemParent)
+			{
+				Destroy(child.gameObject);
+			}
+
+			foreach (Lobby lobby in lobbies.Results)
+			{
+				LobbyItem lobbyItem = Instantiate(lobbyItemPrefab, lobbyItemParent);
+				lobbyItem.Initialise(this, lobby);
+			}
+
+			_isRefreshing = false;
         }
-        catch (LobbyServiceException ex)
-        {
-            Debug.LogException(ex);
+		catch (LobbyServiceException ex)
+		{
+			Debug.LogException(ex);
+			return;
+		}
 
-            return;
-        }
-        finally
-        {
-            _isRefreshing = false;
-        }
     }
 
-    public async void JoinAsync(Lobby lobby)
+    public void JoinAsync(Lobby lobby)
     {
-        if (_isJoning)
-            return;
-
-        _isJoning = true;
-        try
-        {
-            Lobby joiningLobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobby.Id);
-            string joinCode = joiningLobby.Data["JoinCode"].Value;
-
-            await ClientSingleton.Instance.GameManager.StartClientAsync(joinCode);
-        }
-        catch (LobbyServiceException ex)
-        {
-            Debug.LogException(ex);
-
-            return;
-        }
-        finally
-        {
-            _isJoning = false;
-        }
+		mainMenu.JoinAsync(lobby);
     }
 }

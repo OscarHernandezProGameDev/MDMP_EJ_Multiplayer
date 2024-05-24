@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,23 +11,25 @@ public enum AuthState
     Authenticating,
     Authenticated,
     Error,
-    Timeout
+    TimeOut
 }
 
 public static class AuthenticationManager
 {
-    public static AuthState AuthState { get; private set; } = AuthState.NotAuthenticated;
+    public static AuthState AuthState {  get; private set; } = AuthState.NotAuthenticated;
 
-    public static async Task<AuthState> DoAuthAsync(int maxTries = 5)
+    public static async Task<AuthState> DoAuth(int maxTries = 5)
     {
-        switch (AuthState)
+        if (AuthState == AuthState.Authenticated)
         {
-            case AuthState.Authenticated:
-                return AuthState;
-            case AuthState.Authenticating:
-                Debug.LogWarning("Already authenticating");
-                await Authenticating();
-                return AuthState;
+            return AuthState;
+        }
+
+        if (AuthState == AuthState.Authenticating)
+        {
+            Debug.LogWarning("Already authenticating!");
+            await Authenticating();
+            return AuthState;
         }
 
         await SignInAnonymouslyAsync(maxTries);
@@ -39,12 +40,14 @@ public static class AuthenticationManager
     private static async Task<AuthState> Authenticating()
     {
         while (AuthState == AuthState.Authenticating || AuthState == AuthState.NotAuthenticated)
+        {
             await Task.Delay(500);
+        }
 
         return AuthState;
     }
 
-    private static async Task SignInAnonymouslyAsync(int maxTries = 5)
+    private static async Task SignInAnonymouslyAsync(int  maxTries = 5)
     {
         AuthState = AuthState.Authenticating;
 
@@ -59,7 +62,6 @@ public static class AuthenticationManager
                 if (AuthenticationService.Instance.IsSignedIn && AuthenticationService.Instance.IsAuthorized)
                 {
                     AuthState = AuthState.Authenticated;
-
                     break;
                 }
             }
@@ -75,14 +77,13 @@ public static class AuthenticationManager
             }
 
             tries++;
-
             await Task.Delay(1000);
         }
 
         if (AuthState != AuthState.Authenticated)
         {
             Debug.LogWarning($"Time Out, player could not be authenticated in {tries} tries");
-            AuthState = AuthState.Timeout;
+            AuthState = AuthState.TimeOut;
         }
     }
 }

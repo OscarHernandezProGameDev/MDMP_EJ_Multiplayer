@@ -1,10 +1,10 @@
+using TMPro;
 using System;
+using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class NameSelector : MonoBehaviour
 {
@@ -15,9 +15,24 @@ public class NameSelector : MonoBehaviour
 
     public const string PlayerNameKey = "PlayerName";
 
+    void Start()
+    {
+        if(SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+        {
+            LoadNextScene();
+            return;
+        }
+
+        nameField.text = PlayerPrefs.GetString(PlayerNameKey, string.Empty);
+
+        HandleNameChanged();
+    }
+
     public void HandleNameChanged()
     {
-        connectButton.interactable = nameField.text.Length >= minNameLength && nameField.text.Length <= maxNameLength;
+        connectButton.interactable = 
+            nameField.text.Length >= minNameLength &&
+            nameField.text.Length <= maxNameLength;
     }
 
     public void Connect()
@@ -25,20 +40,6 @@ public class NameSelector : MonoBehaviour
         PlayerPrefs.SetString(PlayerNameKey, nameField.text);
 
         LoadNextScene();
-    }
-
-    void Start()
-    {
-        if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
-        {
-            LoadNextScene();
-
-            return;
-        }
-
-        nameField.text = PlayerPrefs.GetString(PlayerNameKey, string.Empty);
-
-        HandleNameChanged();
     }
 
     private void LoadNextScene()

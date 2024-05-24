@@ -22,6 +22,7 @@ public abstract class Healing : NetworkBehaviour
         base.OnNetworkDespawn();
     }
 
-    public abstract void Collect(Health health);
+    public abstract void Collect(Health medKit);
+
     public abstract void ResetStatus();
 }

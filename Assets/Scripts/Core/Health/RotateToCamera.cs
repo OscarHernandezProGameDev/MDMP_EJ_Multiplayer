@@ -13,7 +13,6 @@ public class RotateToCamera : NetworkBehaviour
         _camera = Camera.main;
     }
 
-    // Update is called once per frame
     void Update()
     {
         FaceCamera();

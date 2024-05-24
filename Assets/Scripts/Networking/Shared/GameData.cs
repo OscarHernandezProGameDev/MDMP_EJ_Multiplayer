@@ -24,6 +24,7 @@ public class UserData
 {
     public string userName;
     public string userAuthId;
+    public int teamIndex = -1;
     public GameInfo userGamePreferences = new GameInfo();
 }
 
@@ -39,8 +40,8 @@ public class GameInfo
         return gameQueue switch
         {
             GameQueue.Solo => "single-queue",
-            GameQueue.Team => "multi-queue",
-            _ => "single-queue",
+            GameQueue.Team => "team-queue",
+            _ => "single-queue"
         };
     }
 }

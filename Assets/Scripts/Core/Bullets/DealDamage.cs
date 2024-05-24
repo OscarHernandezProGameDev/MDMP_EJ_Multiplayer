@@ -1,41 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 
 public class DealDamage : MonoBehaviour
 {
     [SerializeField] private int damage = 10;
+    [SerializeField] private bool isFriendlyFireActive;
 
     private ulong ownerClientId;
-    private Stats stats;
+    private Stats playerStats;
+    private int teamIndex;
 
     private void OnEnable()
     {
-        stats = FindAnyObjectByType<Stats>();
+        playerStats = FindObjectOfType<Stats>();
     }
 
     public void SetOwner(ulong ownerClientId)
     {
         this.ownerClientId = ownerClientId;
     }
-
-    void OnTriggerEnter(Collider other)
+    public void SetTeamIndex(int teamIndex)
     {
-        if (other.gameObject.TryGetComponent<NetworkObject>(out var netVar))
+        this.teamIndex = teamIndex;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<NetworkObject>(out NetworkObject netObj))
         {
-            if (netVar.OwnerClientId == ownerClientId)
+            if (ownerClientId == netObj.OwnerClientId)
             {
                 return;
             }
-        }
-        if (other.gameObject.TryGetComponent<Health>(out var health))
+		}
+
+        if (other.TryGetComponent<SetPlayerData>(out SetPlayerData player))
         {
-            health.TakeDamage(damage);
-            if (health.currentHealth.Value == 0)
+            if (player.TeamIndex.Value < 0 || player.TeamIndex.Value != teamIndex || isFriendlyFireActive)
             {
-                stats.HandlerPlayerKills(ownerClientId);
+                other.TryGetComponent<Health>(out Health health);
+                health.TakeDamage(damage);
+                if (health.currentHealth.Value == 0)
+                {
+                    playerStats.HandlePlayerKills(ownerClientId);
+                }
             }
         }
     }

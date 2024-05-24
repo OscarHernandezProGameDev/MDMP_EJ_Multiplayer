@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Controls;
@@ -9,13 +11,13 @@ public class InputReader : ScriptableObject, IPlayerActions
     private Controls controls;
 
     #region Events
-    public event Action<bool> OnFireEvent;
     public event Action<Vector3> OnMoveEvent;
+    public event Action<bool> OnFireEvent;
     public event Action<bool> OnAimEvent;
     public event Action<bool> OnLeaderboardEvent;
     #endregion
 
-    void OnEnable()
+    private void OnEnable()
     {
         if (controls == null)
         {
@@ -26,7 +28,7 @@ public class InputReader : ScriptableObject, IPlayerActions
         controls.Player.Enable();
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         controls.Player.Disable();
     }

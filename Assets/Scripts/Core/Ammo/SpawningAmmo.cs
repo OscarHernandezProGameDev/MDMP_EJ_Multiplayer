@@ -9,12 +9,10 @@ public class SpawningAmmo : Ammo
         if (!IsServer)
         {
             Show(false);
-
             return 0;
         }
 
-        if (isCollected)
-            return 0;
+        if (isCollected) { return 0; }
 
         isCollected = true;
 

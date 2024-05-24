@@ -6,19 +6,20 @@ public class BulletProjectile : MonoBehaviour
 {
     private Rigidbody bulletRb;
 
-    [SerializeField] private float speed = 10f;
+    public float Speed = 10f;
 
-    void Awake()
+    private void Awake()
     {
         bulletRb = GetComponent<Rigidbody>();
     }
 
     void Start()
     {
-        bulletRb.velocity = transform.forward * speed;
-        //DestoySelf();
+        bulletRb.velocity = transform.forward * Speed;
+        //DestroySelf();
     }
-    private void DestoySelf()
+
+    private void DestroySelf()
     {
         Destroy(gameObject, 2f);
     }

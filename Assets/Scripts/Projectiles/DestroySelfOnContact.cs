@@ -7,28 +7,41 @@ public class DestroySelfOnContact : MonoBehaviour
 {
     public static DestroySelfOnContact instance;
 
-#if !NO_POOLING
-    public NetworkObject NetworkObject;
-    public GameObject Prefab;
-#endif
+    public NetworkObject networkObject;
+    public GameObject prefab;
+
+    public int teamIndex;
+    [SerializeField] private bool destroyOnFriendlyFire;
 
     private void Awake()
     {
         instance = this;
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-#if NO_POOLING
-        Destroy(gameObject);
-#else
-        NetworkObjectPool.Singleton.ReturnNetworkObject(NetworkObject, Prefab);
-
-        // Nos aseguramos que se instance en los cientes
-        if (NetworkObject.IsSpawned)
+        if (other.TryGetComponent<SetPlayerData>(out SetPlayerData player))
         {
-            NetworkObject.Despawn(false);
+            if (player.TeamIndex.Value >= 0 && player.TeamIndex.Value == teamIndex && !destroyOnFriendlyFire)
+            {
+                return;
+            }
+            else
+            {
+                NetworkObjectPool.Singleton.ReturnNetworkObject(networkObject, prefab);
+                if (networkObject.IsSpawned)
+                {
+                    networkObject.Despawn(false);
+                }
+            }
         }
-#endif
+        else
+        {
+            NetworkObjectPool.Singleton.ReturnNetworkObject(networkObject, prefab);
+            if (networkObject.IsSpawned)
+            {
+                networkObject.Despawn(false);
+            }
+        }
     }
 }

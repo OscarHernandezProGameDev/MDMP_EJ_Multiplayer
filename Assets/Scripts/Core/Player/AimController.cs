@@ -1,60 +1,56 @@
-using System;
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
-using Cinemachine;
+using System.Globalization;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AimController : NetworkBehaviour
 {
     public static AimController instance;
 
-    [Header("Referencias")]
+    [Header("References")]
     [SerializeField] private InputReader inputReader;
     [SerializeField] private CinemachineFreeLook thirdPersonCamera;
     [SerializeField] private CinemachineFreeLook aimCamera;
     [SerializeField] private GameObject rootHead;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     [SerializeField] private Transform fireTransform;
-    public bool isAimingStatus;
 
     [Header("Settings")]
+    public bool isAimingStatus;
     [SerializeField] private float rotationSpeed = 20f;
-    [SerializeField] private Vector3 rootHeadInitalPosition;
+    [SerializeField] private Vector3 rootHeadInitialPosition;
 
     public override void OnNetworkSpawn()
     {
-        if (!IsOwner)
-            return;
+        if (!IsOwner) { return; }
 
         inputReader.OnAimEvent += HandleAim;
 
         instance = this;
 
-        rootHeadInitalPosition = rootHead.transform.localPosition;
+        rootHeadInitialPosition = rootHead.transform.localPosition;
     }
 
     public override void OnNetworkDespawn()
     {
-        if (!IsOwner)
-            return;
+        if (!IsOwner) { return; }
 
         inputReader.OnAimEvent -= HandleAim;
     }
 
     private void HandleAim(bool isAiming)
     {
-        isAimingStatus = isAiming;
-
         SetCamera(isAiming);
     }
 
-    void Update()
+    private void Update()
     {
-        if (!IsOwner)
-            return;
+        if (!IsOwner) { return; }
 
-        if (isAimingStatus)
+        if (isAimingStatus == true)
         {
             RotateToAimCamera();
         }
@@ -62,9 +58,20 @@ public class AimController : NetworkBehaviour
 
     private void SetCamera(bool isAiming)
     {
-        thirdPersonCamera.gameObject.SetActive(!isAiming);
-        aimCamera.gameObject.SetActive(isAiming);
-        rootHead.transform.localPosition = isAiming ? new Vector3(.5f, 1.5f, 0) : rootHeadInitalPosition;
+        isAimingStatus = isAiming;
+
+        if (isAiming == true)
+        {
+            thirdPersonCamera.gameObject.SetActive(false);
+            aimCamera.gameObject.SetActive(true);
+            rootHead.transform.localPosition = new Vector3(.5f, 1.5f, 0);
+        }
+        else if (isAiming == false)
+        {
+            aimCamera.gameObject.SetActive(false);
+            thirdPersonCamera.gameObject.SetActive(true);
+            rootHead.transform.localPosition = rootHeadInitialPosition;
+        }
     }
 
     public Vector3 AimToRayPoint()
@@ -73,10 +80,13 @@ public class AimController : NetworkBehaviour
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
 
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
+        if(Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
         {
-            fireTransform.position = raycastHit.point;
-            mouseWorldPosition = raycastHit.point;
+            if (raycastHit.transform.gameObject != gameObject)
+            {
+                fireTransform.position = raycastHit.point;
+                mouseWorldPosition = raycastHit.point;
+            }
         }
 
         return mouseWorldPosition;

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,32 +8,34 @@ public class LeaderboardEntity : MonoBehaviour
 {
     [SerializeField] private TMP_Text positionText;
     [SerializeField] private TMP_Text playerNameText;
-    [SerializeField] private TMP_Text killsText;
     [SerializeField] private TMP_Text deathsText;
+    [SerializeField] private TMP_Text killsText;
 
     private FixedString32Bytes playerName;
     public ulong ClientId { get; private set; }
-    public int Kills { get; private set; }
     public int Deaths { get; private set; }
+    public int Kills { get; private set; }
 
-    public void Initialise(ulong clientId, FixedString32Bytes playerName, int kills, int deaths)
+    public void Initialise(ulong clientId, FixedString32Bytes playerName, int deaths, int kills)
     {
-        ClientId = clientId;
+        this.ClientId = clientId;
         this.playerName = playerName;
 
         UpdateDeaths(deaths);
         UpdateKills(kills);
     }
 
-    public void UpdateDeaths(int deaths)
+    public void UpdateDeaths(int death)
     {
-        Deaths = deaths;
+        Deaths = death;
+
         UpdateText();
     }
 
-    public void UpdateKills(int kills)
+    public void UpdateKills(int kill)
     {
-        Kills = kills;
+        Kills = kill;
+
         UpdateText();
     }
 
@@ -42,7 +43,7 @@ public class LeaderboardEntity : MonoBehaviour
     {
         positionText.text = (transform.GetSiblingIndex() + 1).ToString();
         playerNameText.text = playerName.Value;
-        killsText.text = Kills.ToString();
         deathsText.text = Deaths.ToString();
+        killsText.text = Kills.ToString();
     }
 }

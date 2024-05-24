@@ -5,34 +5,34 @@ using UnityEngine;
 
 public class Stats : MonoBehaviour
 {
-    public Dictionary<ulong, NetworkVariable<int>> DeathsStats { get; } = new Dictionary<ulong, NetworkVariable<int>>();
-    public Dictionary<ulong, NetworkVariable<int>> KillsStats { get; } = new Dictionary<ulong, NetworkVariable<int>>();
+    public Dictionary<ulong, NetworkVariable<int>> deathsStats = new Dictionary<ulong, NetworkVariable<int>>();
+    public Dictionary<ulong, NetworkVariable<int>> killsStats = new Dictionary<ulong, NetworkVariable<int>>();
 
-    public void HandlerPlayerDeath(ulong ownerId)
+    public void HandlePlayerDeath(ulong ownerId)
     {
-        if (DeathsStats.ContainsKey(ownerId))
+        if (deathsStats.ContainsKey(ownerId))
         {
-            DeathsStats[ownerId].Value++;
+            deathsStats[ownerId].Value++;
         }
     }
 
-    public void HandlerPlayerKills(ulong killId)
+    public void HandlePlayerKills(ulong killerId)
     {
-        if (KillsStats.ContainsKey(killId))
+        if (killsStats.ContainsKey(killerId))
         {
-            KillsStats[killId].Value++;
+            killsStats[killerId].Value++;
         }
     }
 
     public void AddPlayerToLists(ulong ownerId)
     {
-        if (!DeathsStats.ContainsKey(ownerId))
+        if (!deathsStats.ContainsKey(ownerId))
         {
-            DeathsStats[ownerId] = new NetworkVariable<int>(0);
+            deathsStats[ownerId] = new NetworkVariable<int>(0);
         }
-        if (!KillsStats.ContainsKey(ownerId))
+        if (!killsStats.ContainsKey(ownerId))
         {
-            KillsStats[ownerId] = new NetworkVariable<int>(0);
+            killsStats[ownerId] = new NetworkVariable<int>(0);
         }
     }
 }

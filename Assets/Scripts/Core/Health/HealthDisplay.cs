@@ -12,22 +12,20 @@ public class HealthDisplay : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (!IsClient)
-            return;
+        if (!IsClient) { return; }
 
-        health.currentHealth.OnValueChanged += HandleHealthChange;
-        HandleHealthChange(0, health.currentHealth.Value);
+        health.currentHealth.OnValueChanged += HandleHealthChanged;
+        HandleHealthChanged(0, health.currentHealth.Value);
     }
 
-    override public void OnNetworkDespawn()
+    public override void OnNetworkDespawn()
     {
-        if (!IsClient)
-            return;
+        if (!IsClient) { return; }
 
-        health.currentHealth.OnValueChanged -= HandleHealthChange;
+        health.currentHealth.OnValueChanged -= HandleHealthChanged;
     }
 
-    private void HandleHealthChange(int oldHealth, int newHealth)
+    private void HandleHealthChanged(int oldHealth, int newHealth)
     {
         healthImageUI.fillAmount = (float)newHealth / health.maxHealth;
     }
