@@ -30,7 +30,7 @@ public class NetworkServer : IDisposable
         UnityTransport transport = _networkManager.gameObject.GetComponent<UnityTransport>();
         transport.SetConnectionData(ip, (ushort)port);
 
-        return _networkManager.StartClient();
+        return _networkManager.StartServer();
     }
 
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
