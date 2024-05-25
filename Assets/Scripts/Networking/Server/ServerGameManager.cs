@@ -27,14 +27,18 @@ public class ServerGameManager : IDisposable
 
     public async Task StartGameServerAsync()
     {
+        Debug.Log("BeginServerCheck .....");
+
         await multiplayAllocationService.BeginServerCheck();
 
         try
         {
+            Debug.Log("GetMatchmakerPayloadAsync .....");
             MatchmakingResults matchmakerPayload = await GetMatchmakerPayloadAsync();
 
             if (matchmakerPayload != null)
             {
+                Debug.Log("StartBackFililAsync .....");
                 await StartBackFililAsync(matchmakerPayload);
 
                 NetworkServer.OnUserJoined += UserJoined;
@@ -48,12 +52,15 @@ public class ServerGameManager : IDisposable
             Debug.LogWarning(ex);
         }
 
+        Debug.Log($"Open Connection {serverIP}:{serverPort}");
         if (!NetworkServer.OpenConnection(serverIP, serverPort))
         {
             Debug.LogWarning("NetworkServer did not start as expected");
 
             return;
         }
+
+        Debug.Log("Loading scene .....");
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(gameServerName, LoadSceneMode.Single);
 
@@ -73,11 +80,15 @@ public class ServerGameManager : IDisposable
 
     private void UserJoined(UserData user)
     {
+        Debug.Log("User Joining .....");
         backfiller.AddPlayerToMatch(user);
         multiplayAllocationService.AddPlayer();
 
         if (!backfiller.NeedsPlayers() && backfiller.IsBackfilling)
+        {
+            Debug.Log("Stop BackFill .....");
             _ = backfiller.StopBackfill();
+        }
     }
 
     private void UserLeft(UserData user)
@@ -92,7 +103,10 @@ public class ServerGameManager : IDisposable
         }
 
         if (backfiller.NeedsPlayers() && !backfiller.IsBackfilling)
+        {
+            Debug.Log("Begin BackFill .....");
             _ = backfiller.BeginBackfilling();
+        }
     }
 
     private async void CloseServerAsync()

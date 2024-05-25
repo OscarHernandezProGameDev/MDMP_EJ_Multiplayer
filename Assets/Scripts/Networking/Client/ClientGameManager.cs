@@ -53,6 +53,7 @@ public class ClientGameManager : IDisposable
 
     private void StartClient(string ip, int port)
     {
+        Debug.Log($"StartClient: {ip}:{port}");
         UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
 
         transport.SetConnectionData(ip, (ushort)port);
