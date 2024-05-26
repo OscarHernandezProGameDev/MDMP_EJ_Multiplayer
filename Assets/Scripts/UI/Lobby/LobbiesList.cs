@@ -9,7 +9,7 @@ public class LobbiesList : MonoBehaviour
 {
     [SerializeField] private Transform lobbyItemParent;
     [SerializeField] private LobbyItem lobbyItemPrefab;
-
+    [SerializeField] private MainMenu mainMenu;
     private bool _isJoning = false;
     private bool _isRefreshing = false;
 
@@ -71,28 +71,8 @@ public class LobbiesList : MonoBehaviour
         }
     }
 
-    public async void JoinAsync(Lobby lobby)
+    public void JoinAsync(Lobby lobby)
     {
-        if (_isJoning)
-            return;
-
-        _isJoning = true;
-        try
-        {
-            Lobby joiningLobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobby.Id);
-            string joinCode = joiningLobby.Data["JoinCode"].Value;
-
-            await ClientSingleton.Instance.GameManager.StartClientAsync(joinCode);
-        }
-        catch (LobbyServiceException ex)
-        {
-            Debug.LogException(ex);
-
-            return;
-        }
-        finally
-        {
-            _isJoning = false;
-        }
+        mainMenu.JoinAsync(lobby);
     }
 }
