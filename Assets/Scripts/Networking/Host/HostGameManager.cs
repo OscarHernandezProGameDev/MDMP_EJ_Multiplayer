@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Security;
+using System.Text;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -16,58 +17,67 @@ using UnityEngine.SceneManagement;
 
 public class HostGameManager : IDisposable
 {
-    private const int MaxConnections = 10;
-    private const string gameServerName = "Game";
-    private NetworkServer networkServer;
-
     private Allocation allocation;
-    private string JoinCode;
+    private NetworkObject playerPrefab;
+
+    public string JoinCode;
     private string lobbyId;
 
-    public NetworkServer NetworkServer { get => networkServer; }
+    public NetworkServer NetworkServer { get; private set; }
 
-    public async Task<bool> StartHostAsync()
+    private const int MaxConnections = 10;
+    private const string GameScene = "Game";
+
+    public HostGameManager(NetworkObject playerPrefab)
     {
-        try
-        {
-            allocation = await Relay.Instance.CreateAllocationAsync(MaxConnections);
-        }
-        catch (Exception ex)
-        {
-            Debug.LogWarning(ex);
-            return false;
-        }
+        this.playerPrefab = playerPrefab;
+    }
+
+    public async Task StartHostAsync(bool isPrivate)
+    {
+		try
+		{
+	        allocation = await Relay.Instance.CreateAllocationAsync(MaxConnections);
+		}
+		catch (Exception ex)
+		{
+			Debug.LogWarning(ex);
+			return;
+		}
 
         try
         {
             JoinCode = await Relay.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            Debug.Log($"Join Code: {JoinCode}");
+            Debug.Log($"Join code: { JoinCode }");
         }
         catch (Exception ex)
         {
             Debug.LogWarning(ex);
-
-            return false;
+            return;
         }
 
         UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-        RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
 
+        RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
         transport.SetRelayServerData(relayServerData);
 
         try
         {
-            CreateLobbyOptions lobbyOptions = new CreateLobbyOptions
+            CreateLobbyOptions lobbyOption = new CreateLobbyOptions();
+            lobbyOption.IsPrivate = isPrivate;
+            lobbyOption.Data = new Dictionary<string, DataObject>()
             {
-                IsPrivate = false,
-                Data = new Dictionary<string, DataObject>
                 {
-                    ["JoinCode"] = new DataObject(visibility: DataObject.VisibilityOptions.Member, value: JoinCode)
+                    "JoinCode", new DataObject(
+                        visibility: DataObject.VisibilityOptions.Member,
+                        value: JoinCode
+                    )
                 }
             };
 
             string playerName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Unkown");
-            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync($"{playerName}'s Lobby", MaxConnections, lobbyOptions);
+
+            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync($"{playerName}'s Lobby", MaxConnections, lobbyOption);
 
             lobbyId = lobby.Id;
 
@@ -75,19 +85,18 @@ public class HostGameManager : IDisposable
         }
         catch (LobbyServiceException ex)
         {
-            Debug.LogWarning(ex);
-
-            return false;
+            Debug.Log(ex);
+            return;
         }
 
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(gameServerName, LoadSceneMode.Single);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(GameScene, LoadSceneMode.Single);
 
         while (!asyncLoad.isDone)
         {
             await Task.Delay(10);
         }
 
-        networkServer = new NetworkServer(NetworkManager.Singleton);
+        NetworkServer = new NetworkServer(NetworkManager.Singleton, playerPrefab);
 
         UserData userData = new UserData
         {
@@ -95,24 +104,21 @@ public class HostGameManager : IDisposable
             userAuthId = AuthenticationService.Instance.PlayerId
         };
         string payload = JsonUtility.ToJson(userData);
-        byte[] payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
+        byte[] payloadByte = Encoding.UTF8.GetBytes(payload);
 
-        NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
+        NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadByte;
 
         NetworkManager.Singleton.StartHost();
 
         NetworkServer.OnClientLeft += HandleClientLeft;
-
-        return true;
     }
 
     private IEnumerator HeartbeartLobby(float waitTimeSeconds)
     {
         WaitForSecondsRealtime delay = new WaitForSecondsRealtime(waitTimeSeconds);
-        while (true)
+        while(true)
         {
             Lobbies.Instance.SendHeartbeatPingAsync(lobbyId);
-
             yield return delay;
         }
     }
@@ -124,8 +130,7 @@ public class HostGameManager : IDisposable
 
     public async void Shutdown()
     {
-        if (string.IsNullOrEmpty(lobbyId))
-            return;
+        if (string.IsNullOrEmpty(lobbyId)) { return; }
 
         HostSingleton.Instance.StopCoroutine(nameof(HeartbeartLobby));
 
@@ -135,14 +140,14 @@ public class HostGameManager : IDisposable
         }
         catch (LobbyServiceException ex)
         {
-            Debug.LogWarning(ex);
+            Debug.Log(ex);
         }
 
-        lobbyId = null;
+        lobbyId = string.Empty;
 
         NetworkServer.OnClientLeft -= HandleClientLeft;
 
-        networkServer?.Dispose();
+        NetworkServer?.Dispose();
     }
 
     private async void HandleClientLeft(string authId)
@@ -151,9 +156,9 @@ public class HostGameManager : IDisposable
         {
             await LobbyService.Instance.RemovePlayerAsync(lobbyId, authId);
         }
-        catch (LobbyServiceException ex)
+        catch (LobbyServiceException exception)
         {
-            Debug.LogWarning(ex);
+            Debug.Log(exception);
         }
     }
 }

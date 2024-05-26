@@ -69,7 +69,7 @@ public class MatchplayBackfiller : IDisposable
             Debug.LogWarningFormat("User: {0} - {1} already in Match. Ignoring add.",
                 userData.userName,
                 userData.userAuthId);
-                
+
             return;
         }
 
@@ -90,7 +90,7 @@ public class MatchplayBackfiller : IDisposable
         }
 
         MatchProperties.Players.Remove(playerToRemove);
-        MatchProperties.Teams[0].PlayerIds.Remove(userId);
+        GetTeamByUserId(userId).PlayerIds.Remove(userId);
         localDataDirty = true;
 
         return MatchPlayerCount;
@@ -99,6 +99,12 @@ public class MatchplayBackfiller : IDisposable
     public bool NeedsPlayers()
     {
         return MatchPlayerCount < maxPlayers;
+    }
+
+    public Team GetTeamByUserId(string userId)
+    {
+        return MatchProperties.Teams.FirstOrDefault(
+            t => t.PlayerIds.Contains(userId));
     }
 
     private Player GetPlayerById(string userId)

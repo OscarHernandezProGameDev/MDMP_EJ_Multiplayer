@@ -31090,7 +31090,7 @@ GameObject:
   m_Component:
   - component: {fileID: 679480826}
   - component: {fileID: 679480825}
-  - component: {fileID: 679480824}
+  - component: {fileID: 679480827}
   m_Layer: 0
   m_Name: NetworkPool
   m_TagString: Untagged
@@ -31098,21 +31098,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &679480824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 679480823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4d44dbefe15da5498481bcd500144a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PooledPrefabsList:
-  - Prefab: {fileID: 8090351214618166283, guid: 1e63b86e04a33443490d75f58347921e, type: 3}
-    PrewarmCount: 5
 --- !u!114 &679480825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31149,6 +31134,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &679480827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679480823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 570fd8bb7473322429af716b6d05dc2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PooledPrefabsList: []
 --- !u!1001 &680135132
 PrefabInstance:
   m_ObjectHideFlags: 0

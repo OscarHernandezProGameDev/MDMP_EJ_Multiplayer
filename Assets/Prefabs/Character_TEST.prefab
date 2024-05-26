@@ -467,7 +467,7 @@ GameObject:
   - component: {fileID: 2387654872760201320}
   - component: {fileID: 4423558114834687081}
   - component: {fileID: 56173076935452172}
-  - component: {fileID: 7161372407283476779}
+  - component: {fileID: 6773009844126618283}
   - component: {fileID: 2468449599859229813}
   - component: {fileID: 8521424957469925999}
   m_Layer: 0
@@ -751,7 +751,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thirdPersonCamera: {fileID: 7842006244687189501}
   priority: 15
---- !u!114 &7161372407283476779
+--- !u!114 &6773009844126618283
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -760,11 +760,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1316981293597076}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d292c19cd426754fb09eec711f69df6, type: 3}
+  m_Script: {fileID: 11500000, guid: c993e49c9e9782a448d7cf2a1900aaf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerNameText: {fileID: 5059523617791933105}
-  <Health>k__BackingField: {fileID: 2387654872760201320}
   playerName:
     m_InternalValue:
       utf8LengthInBytes: 0
@@ -800,6 +799,9 @@ MonoBehaviour:
         byte0027: 0
         byte0028: 0
         byte0029: 0
+  TeamIndex:
+    m_InternalValue: 0
+  <Health>k__BackingField: {fileID: 2387654872760201320}
 --- !u!114 &2468449599859229813
 MonoBehaviour:
   m_ObjectHideFlags: 0

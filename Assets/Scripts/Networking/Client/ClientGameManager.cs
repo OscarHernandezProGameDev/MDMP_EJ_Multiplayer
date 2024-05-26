@@ -3,34 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Security;
 using System.Threading.Tasks;
-using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.Netcode;
 using Unity.Networking.Transport.Relay;
-using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Text;
+using Unity.Services.Authentication;
 
 public class ClientGameManager : IDisposable
 {
     private JoinAllocation allocation;
-    private NetworkClient _networkClient;
+    private NetworkClient networkClient;
     private MatchplayMatchmaker matchmaker;
 
     private UserData userData;
 
     private const string MainMenu = "MainMenu";
-
     public async Task<bool> InitAsync()
     {
         await UnityServices.InitializeAsync();
 
-        _networkClient = new NetworkClient(NetworkManager.Singleton);
+        networkClient = new NetworkClient(NetworkManager.Singleton);
         matchmaker = new MatchplayMatchmaker();
 
-        AuthState authState = await AuthenticationManager.DoAuthAsync();
+        AuthState authState = await AuthenticationManager.DoAuth();
 
         if (authState == AuthState.Authenticated)
         {
@@ -39,25 +39,22 @@ public class ClientGameManager : IDisposable
                 userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
                 userAuthId = AuthenticationService.Instance.PlayerId
             };
-
             return true;
         }
+
 
         return false;
     }
 
-    public void GotoMainMenu()
+    public void GoToMainMenu()
     {
         SceneManager.LoadScene(MainMenu);
     }
 
-    private void StartClient(string ip, int port)
+    public void StartClient(string ip, int port)
     {
-        Debug.Log($"StartClient: {ip}:{port}");
         UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-
         transport.SetConnectionData(ip, (ushort)port);
-
         ConnectClient();
     }
 
@@ -70,13 +67,12 @@ public class ClientGameManager : IDisposable
         catch (Exception ex)
         {
             Debug.LogWarning(ex);
-
             return;
         }
 
         UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-        RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
 
+        RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
         transport.SetRelayServerData(relayServerData);
 
         ConnectClient();
@@ -85,18 +81,18 @@ public class ClientGameManager : IDisposable
     private void ConnectClient()
     {
         string payload = JsonUtility.ToJson(userData);
-        byte[] payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
+        byte[] payloadByte = Encoding.UTF8.GetBytes(payload);
 
-        NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
+        NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadByte;
 
         NetworkManager.Singleton.StartClient();
     }
 
-    public async void MatchmakeAsync(Action<MatchmakerPollingResult> onMatchmakeResponse)
+    public async void MatchmakeAsync(bool isTeamQueue, Action<MatchmakerPollingResult> onMatchmakeResponse)
     {
-        if (matchmaker.IsMatchmaking)
-            return;
+        if (matchmaker.IsMatchmaking) { return; }
 
+        userData.userGamePreferences.gameQueue = isTeamQueue ? GameQueue.Team : GameQueue.Solo;
         MatchmakerPollingResult matchmakingResult = await GetMatchAsync();
         onMatchmakeResponse?.Invoke(matchmakingResult);
     }
@@ -108,24 +104,23 @@ public class ClientGameManager : IDisposable
         if (matchmakingResult.result == MatchmakerPollingResult.Success)
         {
             StartClient(matchmakingResult.ip, matchmakingResult.port);
-            //return MatchmakerPollingResult.Success;
         }
 
         return matchmakingResult.result;
     }
 
-    public async Task CancelMatchmakingAsync()
+    public async Task CancelMatchmaking()
     {
         await matchmaker.CancelMatchmaking();
     }
 
     public void Disconnect()
     {
-        _networkClient.Disconnect();
+        networkClient.Disconnect();
     }
 
     public void Dispose()
     {
-        _networkClient?.Dispose();
+        networkClient?.Dispose();
     }
 }

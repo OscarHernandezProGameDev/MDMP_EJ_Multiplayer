@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ApplicationController : MonoBehaviour
 {
@@ -10,43 +12,59 @@ public class ApplicationController : MonoBehaviour
     [SerializeField] private HostSingleton hostPrefab;
     [SerializeField] private ServerSingleton serverPrefab;
     [SerializeField] private ApplicationData applicationData;
+    [SerializeField] private NetworkObject playerPrefab;
 
-    async void Start()
+    private const string GameScene = "Game";
+
+    private async void Start()
     {
         DontDestroyOnLoad(gameObject);
 
-        // Somos un servidor dericado
-        bool isDedicateServer = SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null;
-
-        await LanchInModeAsync(isDedicateServer);
+        await LaunchInMode(SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null);
     }
 
-    private async Task LanchInModeAsync(bool isDedicateServer)
+    private async Task LaunchInMode(bool isDedicateServer)
     {
         if (isDedicateServer)
         {
+            Application.targetFrameRate = 60;
+
             applicationData = new ApplicationData();
 
             ServerSingleton serverSingleton = Instantiate(serverPrefab);
 
-            await serverSingleton.CreateServerAsync();
-
-            await serverSingleton.GameManager.StartGameServerAsync();
+            StartCoroutine(LoadGameSceneAsync(serverSingleton));
         }
         else
         {
             HostSingleton hostSingleton = Instantiate(hostPrefab);
 
-            hostSingleton.CreateHost();
+            hostSingleton.CreateHost(playerPrefab);
 
             ClientSingleton clientSingleton = Instantiate(clientPrefab);
 
-            bool isAuthenticated = await clientSingleton.CreateClientAsync();
+            bool isAuthenticated = await clientSingleton.CreateClient();
 
             if (isAuthenticated)
             {
-                clientSingleton.GameManager.GotoMainMenu();
+                clientSingleton.GameManager.GoToMainMenu();
             }
         }
+    }
+
+    private IEnumerator LoadGameSceneAsync(ServerSingleton serverSingleton)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(GameScene);
+
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        Task createServerTask = serverSingleton.CreateServer(playerPrefab);
+        yield return new WaitUntil(() => createServerTask.IsCompleted);
+
+        Task startServerTask = serverSingleton.GameManager.StartGameServerAsync();
+        yield return new WaitUntil(() => startServerTask.IsCompleted);
     }
 }

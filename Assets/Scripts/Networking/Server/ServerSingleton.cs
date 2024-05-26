@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,28 +15,34 @@ public class ServerSingleton : MonoBehaviour
     {
         get
         {
+            if (instance != null) { return instance; }
+
+            instance = FindAnyObjectByType<ServerSingleton>();
+
             if (instance == null)
             {
-                instance = FindAnyObjectByType<ServerSingleton>();
-                if (instance == null)
-                {
-                    Debug.LogError("No HostSingleton found in the scene!");
-                }
+                Debug.LogError("No ServerSingleton found in this scene!");
+                return null;
             }
 
             return instance;
         }
     }
-
-    void Start()
+    private void Start()
     {
         DontDestroyOnLoad(gameObject);
     }
 
-    public async Task CreateServerAsync()
+    public async Task CreateServer(NetworkObject playerPrefab)
     {
         await UnityServices.InitializeAsync();
-        GameManager = new ServerGameManager(ApplicationData.IP(), ApplicationData.Port(), ApplicationData.QPort(), NetworkManager.Singleton);
+        GameManager = new ServerGameManager(
+            ApplicationData.IP(),
+            ApplicationData.Port(),
+            ApplicationData.QPort(),
+            NetworkManager.Singleton,
+            playerPrefab
+        );
     }
 
     private void OnDestroy()

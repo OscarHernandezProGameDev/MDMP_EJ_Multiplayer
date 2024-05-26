@@ -702,12 +702,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1953077620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25d74bc1405d55541a1c45aca00932c7, type: 3}
+  m_Script: {fileID: 11500000, guid: 7663891388f487e4c8ad5a2268a5207a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clientPrefab: {fileID: 7556863177975820592, guid: 7009e3c9f2bf6214ab2dfc5595a23c04, type: 3}
-  hostPrefab: {fileID: 5696788515379031552, guid: f61d47b61fc0e47408448f18acacd21b, type: 3}
-  serverPrefab: {fileID: 1055659946880348554, guid: f9a00a4678d9dd946a1d682b0ef93850, type: 3}
+  clientPrefab: {fileID: 7289193866318052101, guid: 7009e3c9f2bf6214ab2dfc5595a23c04, type: 3}
+  hostPrefab: {fileID: 6635936874646969261, guid: f61d47b61fc0e47408448f18acacd21b, type: 3}
+  serverPrefab: {fileID: 8316228562536972008, guid: f9a00a4678d9dd946a1d682b0ef93850, type: 3}
+  playerPrefab: {fileID: 958826905206391515, guid: 0da101f21a9d0647e859392a2e4f6a34, type: 3}
 --- !u!4 &1953077622
 Transform:
   m_ObjectHideFlags: 0

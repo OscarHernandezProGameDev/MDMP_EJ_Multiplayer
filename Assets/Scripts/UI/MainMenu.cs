@@ -28,7 +28,7 @@ public class MainMenu : MonoBehaviour
         {
             queueStatusText.text = "Cancelling...";
             isCancelling = true;
-            await ClientSingleton.Instance.GameManager.CancelMatchmakingAsync();
+            await ClientSingleton.Instance.GameManager.CancelMatchmaking();
             isCancelling = false;
             isMatchmaking = false;
             findMatchmakingText.text = "Find Match";
@@ -37,7 +37,7 @@ public class MainMenu : MonoBehaviour
             return;
         }
 
-        ClientSingleton.Instance.GameManager.MatchmakeAsync(OnMatchmakeResponse);
+        ClientSingleton.Instance.GameManager.MatchmakeAsync(false, OnMatchmakeResponse);
         findMatchmakingText.text = "cancel";
         queueStatusText.text = "Searching...";
         isMatchmaking = true;
@@ -67,7 +67,7 @@ public class MainMenu : MonoBehaviour
 
     public async void StartHost()
     {
-        await HostSingleton.Instance.GameManager.StartHostAsync();
+        await HostSingleton.Instance.GameManager.StartHostAsync(true);
     }
 
     public async void StartClient()
