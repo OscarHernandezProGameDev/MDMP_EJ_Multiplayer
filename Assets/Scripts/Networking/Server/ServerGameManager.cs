@@ -78,18 +78,20 @@ public class ServerGameManager : IDisposable
 
     private void UserJoined(UserData user)
     {
-        backfiller.AddPlayerToMatch(user);
-        //Team team = backfiller.GetTeamByUserId(user.userAuthId);
-        //if (!teamIdToTeamIndex.TryGetValue(team.TeamId, out int teamIndex))
-        //{
-        //    teamIndex = teamIdToTeamIndex.Count;
-        //    teamIdToTeamIndex.Add(team.TeamId, teamIndex);
-        //}
+        //backfiller.AddPlayerToMatch(user);
+        Team team = backfiller.GetTeamByUserId(user.userAuthId);
+
+        Debug.Log($"UserId '{user.userAuthId}' joined team: {team.TeamId}");
+        if (!teamIdToTeamIndex.TryGetValue(team.TeamId, out int teamIndex))
+        {
+            teamIndex = teamIdToTeamIndex.Count;
+            teamIdToTeamIndex.Add(team.TeamId, teamIndex);
+        }
 
         //user.teamIndex = teamIndex;
 
         multiplayAllocationService.AddPlayer();
-        
+
         if (!backfiller.NeedsPlayers() && backfiller.IsBackfilling)
         {
             _ = backfiller.StopBackfill();
