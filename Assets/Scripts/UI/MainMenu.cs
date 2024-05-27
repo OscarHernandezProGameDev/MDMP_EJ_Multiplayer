@@ -13,7 +13,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private TMP_Text findMatchmakingText;
     [SerializeField] private TMP_Text queueStatusText;
     [SerializeField] private TMP_Text queueStatusTimerText;
-    [SerializeField] private Toggle teamQueue;
+    [SerializeField] private Toggle teamToogle;
+    [SerializeField] private Toggle privateToogle;
 
     private bool isMatchmaking;
     private bool isCancelling;
@@ -61,7 +62,7 @@ public class MainMenu : MonoBehaviour
         if (isBusy)
             return;
 
-        ClientSingleton.Instance.GameManager.MatchmakeAsync(teamQueue.isOn, OnMatchmakeResponse);
+        ClientSingleton.Instance.GameManager.MatchmakeAsync(teamToogle.isOn, OnMatchmakeResponse);
         findMatchmakingText.text = "cancel";
         queueStatusText.text = "Searching...";
         timeInQueue = 0;
@@ -98,7 +99,7 @@ public class MainMenu : MonoBehaviour
 
         isBusy = true;
 
-        await HostSingleton.Instance.GameManager.StartHostAsync(true);
+        await HostSingleton.Instance.GameManager.StartHostAsync(privateToogle.isOn);
 
         isBusy = false;
     }

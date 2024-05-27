@@ -1932,7 +1932,8 @@ MonoBehaviour:
   findMatchmakingText: {fileID: 1002333869}
   queueStatusText: {fileID: 1289237334}
   queueStatusTimerText: {fileID: 224260826}
-  teamQueue: {fileID: 770986976}
+  teamToogle: {fileID: 770986976}
+  privateToogle: {fileID: 365962716}
 --- !u!1 &1002333867
 GameObject:
   m_ObjectHideFlags: 0
