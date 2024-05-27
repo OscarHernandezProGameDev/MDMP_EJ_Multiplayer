@@ -10,8 +10,8 @@ public class LobbiesList : MonoBehaviour
     [SerializeField] private Transform lobbyItemParent;
     [SerializeField] private LobbyItem lobbyItemPrefab;
     [SerializeField] private MainMenu mainMenu;
-    private bool _isJoning = false;
-    private bool _isRefreshing = false;
+
+    private bool _isRefreshing;
 
     private void OnEnable()
     {

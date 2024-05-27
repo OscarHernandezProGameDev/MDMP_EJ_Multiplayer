@@ -5,13 +5,15 @@ using TMPro;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Lobbies;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
-{    
+{
     [SerializeField] private TMP_InputField joinCodeField;
     [SerializeField] private TMP_Text findMatchmakingText;
     [SerializeField] private TMP_Text queueStatusText;
     [SerializeField] private TMP_Text queueStatusTimerText;
+    [SerializeField] private Toggle teamQueue;
 
     private bool isMatchmaking;
     private bool isCancelling;
@@ -38,9 +40,6 @@ public class MainMenu : MonoBehaviour
 
     public async void FindMatchButtonPressed()
     {
-        if (isBusy)
-            return;
-
         if (isCancelling)
             return;
 
@@ -59,7 +58,10 @@ public class MainMenu : MonoBehaviour
             return;
         }
 
-        ClientSingleton.Instance.GameManager.MatchmakeAsync(false, OnMatchmakeResponse);
+        if (isBusy)
+            return;
+
+        ClientSingleton.Instance.GameManager.MatchmakeAsync(teamQueue.isOn, OnMatchmakeResponse);
         findMatchmakingText.text = "cancel";
         queueStatusText.text = "Searching...";
         timeInQueue = 0;

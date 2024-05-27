@@ -39,7 +39,8 @@ public class GameInfo
         return gameQueue switch
         {
             GameQueue.Solo => "single-queue",
-            GameQueue.Team => "multi-queue",
+            //GameQueue.Team => "multi-queue",
+            GameQueue.Team => "team-queue",
             _ => "single-queue",
         };
     }
