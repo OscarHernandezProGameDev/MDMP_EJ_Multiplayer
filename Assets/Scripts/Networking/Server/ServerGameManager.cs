@@ -88,7 +88,7 @@ public class ServerGameManager : IDisposable
             teamIdToTeamIndex.Add(team.TeamId, teamIndex);
         }
 
-        //user.teamIndex = teamIndex;
+        user.teamIndex = teamIndex;
 
         multiplayAllocationService.AddPlayer();
 

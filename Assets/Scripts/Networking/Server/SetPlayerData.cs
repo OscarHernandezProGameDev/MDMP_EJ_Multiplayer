@@ -10,7 +10,7 @@ public class SetPlayerData : NetworkBehaviour
 {
     [SerializeField] private TMP_Text playerNameText;
     public NetworkVariable<FixedString32Bytes> playerName = new NetworkVariable<FixedString32Bytes>();
-    //public NetworkVariable<int> TeamIndex = new NetworkVariable<int>();
+    public NetworkVariable<int> TeamIndex = new NetworkVariable<int>();
 
     [field: SerializeField] public Health Health { get; private set; }
 
@@ -33,7 +33,7 @@ public class SetPlayerData : NetworkBehaviour
             }
 
             playerName.Value = userData.userName;
-            //TeamIndex.Value = userData.teamIndex;
+            TeamIndex.Value = userData.teamIndex;
 
             OnPlayerSpawned?.Invoke(this);
         }
