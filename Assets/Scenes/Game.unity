@@ -31146,7 +31146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570fd8bb7473322429af716b6d05dc2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PooledPrefabsList: []
+  PooledPrefabsList:
+  - Prefab: {fileID: 8090351214618166283, guid: 1e63b86e04a33443490d75f58347921e, type: 3}
+    PrewarmCount: 20
 --- !u!1001 &680135132
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -708,6 +708,7 @@ MonoBehaviour:
   projectileServer: {fileID: 815177058815489753, guid: 807bca535b4dfa513ad7e6b46706dbb1, type: 3}
   projectileBase: {fileID: 8090351214618166283, guid: 1e63b86e04a33443490d75f58347921e, type: 3}
   charger: {fileID: 4423558114834687081}
+  playerData: {fileID: 6773009844126618283}
 --- !u!114 &2387654872760201320
 MonoBehaviour:
   m_ObjectHideFlags: 0

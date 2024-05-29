@@ -12,6 +12,7 @@ public class FireController : NetworkBehaviour
     [SerializeField] private GameObject projectileServer;
     [SerializeField] private GameObject projectileBase;
     [SerializeField] private Charger charger;
+    [SerializeField] private SetPlayerData playerData;
 
     private bool isAiming;
     private Vector3 mouseWorldPosition;
@@ -110,6 +111,7 @@ public class FireController : NetworkBehaviour
 
         destroySelf.NetworkObject = projectileInstance;
         destroySelf.Prefab = projectileBase;
+        destroySelf.teamIndex = playerData.TeamIndex.Value;
 
         // Nos aseguramos que se instance en los cientes
         if (!projectileInstance.IsSpawned)
@@ -128,6 +130,7 @@ public class FireController : NetworkBehaviour
         if (projectileInstance.TryGetComponent<DealDamage>(out var damage))
         {
             damage.SetOwner(OwnerClientId);
+            damage.SetTeamIndex(playerData.TeamIndex.Value);
         }
 
         #region no pooling

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,9 +8,11 @@ using UnityEngine;
 public class DealDamage : MonoBehaviour
 {
     [SerializeField] private int damage = 10;
+    [SerializeField] private bool isFriendlyFireActive;
 
     private ulong ownerClientId;
     private Stats stats;
+    private int teamIndex;
 
     private void OnEnable()
     {
@@ -21,21 +24,33 @@ public class DealDamage : MonoBehaviour
         this.ownerClientId = ownerClientId;
     }
 
+    public void SetTeamIndex(int teamIndex)
+    {
+        this.teamIndex = teamIndex;
+    }
+
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent<NetworkObject>(out var netVar))
+        if (other.TryGetComponent<NetworkObject>(out var netVar))
         {
             if (netVar.OwnerClientId == ownerClientId)
             {
                 return;
             }
         }
-        if (other.gameObject.TryGetComponent<Health>(out var health))
+
+        if (other.TryGetComponent(out SetPlayerData playerData))
         {
-            health.TakeDamage(damage);
-            if (health.currentHealth.Value == 0)
+            var playerTeamIndex = playerData.TeamIndex.Value;
+
+            if (playerTeamIndex < 0 || playerTeamIndex != teamIndex || isFriendlyFireActive)
             {
-                stats.HandlerPlayerKills(ownerClientId);
+                other.TryGetComponent<Health>(out var health);
+                health.TakeDamage(damage);
+                if (health.currentHealth.Value == 0)
+                {
+                    stats.HandlerPlayerKills(ownerClientId);
+                }
             }
         }
     }
