@@ -16,9 +16,9 @@ public class AimController : NetworkBehaviour
     [SerializeField] private GameObject rootHead;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     [SerializeField] private Transform fireTransform;
-    public bool isAimingStatus;
 
     [Header("Settings")]
+    public bool isAimingStatus;
     [SerializeField] private float rotationSpeed = 20f;
     [SerializeField] private Vector3 rootHeadInitalPosition;
 
