@@ -79,6 +79,7 @@ GameObject:
   - component: {fileID: 1238800343638207644}
   - component: {fileID: 586186252162465197}
   - component: {fileID: 9053995214205356169}
+  - component: {fileID: 6873792395672066193}
   m_Layer: 8
   m_Name: MyPlayerArmature
   m_TagString: Player
@@ -228,6 +229,8 @@ MonoBehaviour:
   look: {x: 0, y: 0}
   jump: 0
   sprint: 0
+  aim: 0
+  leaderboard: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
@@ -329,6 +332,23 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &6873792395672066193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5518046869944313689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e72b16926f3b62b4fb8204b70f0139bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aimCamera: {fileID: 0}
+  aimColliderLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  rotationSpeed: 20
 --- !u!1 &9189869277391664556
 GameObject:
   m_ObjectHideFlags: 0

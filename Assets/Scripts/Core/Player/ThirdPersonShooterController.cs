@@ -8,7 +8,7 @@ using Unity.Netcode;
 using UnityEngine;
 
 
-public class ThirdPersonShjooterController : MonoBehaviour
+public class ThirdPersonShooterController : MonoBehaviour
 //: NetworkBehaviour
 {
     [Header("Referencias")]
