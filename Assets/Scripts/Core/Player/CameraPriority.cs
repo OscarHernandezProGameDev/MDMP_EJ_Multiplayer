@@ -6,13 +6,15 @@ using UnityEngine;
 
 public class CameraPriority : NetworkBehaviour
 {
-    [SerializeField] private CinemachineFreeLook thirdPersonCamera;
+    [SerializeField] private CinemachineVirtualCamera thirdPersonFollowCamera;
+    [SerializeField] private CinemachineVirtualCamera thirdPersonAimCamera;
     [SerializeField] private int priority = 15;
     override public void OnNetworkSpawn()
     {
         if (IsOwner)
         {
-            thirdPersonCamera.Priority = priority;
+            thirdPersonFollowCamera.Priority = priority;
+            thirdPersonAimCamera.Priority = priority;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿ using UnityEngine;
+﻿using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 namespace StarterAssets
 {
-    [RequireComponent(typeof(CharacterController))]
+    //[RequireComponent(typeof(CharacterController))]
 #if ENABLE_INPUT_SYSTEM 
     [RequireComponent(typeof(PlayerInput))]
 #endif
@@ -102,7 +102,8 @@ namespace StarterAssets
         private PlayerInput _playerInput;
 #endif
         private Animator _animator;
-        private CharacterController _controller;
+        //private CharacterController _controller;
+        private Rigidbody _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
 
@@ -135,9 +136,10 @@ namespace StarterAssets
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
             _hasAnimator = TryGetComponent(out _animator);
-            _controller = GetComponent<CharacterController>();
+            //_controller = GetComponent<CharacterController>();
+            _controller = GetComponent<Rigidbody>();
             _input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM 
             _playerInput = GetComponent<PlayerInput>();
@@ -152,7 +154,7 @@ namespace StarterAssets
             _fallTimeoutDelta = FallTimeout;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             _hasAnimator = TryGetComponent(out _animator);
 
@@ -268,8 +270,9 @@ namespace StarterAssets
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
             // move the player
-            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            // _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+            //                  new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            _controller.velocity = targetDirection * targetSpeed;
 
             // update animator if using character
             if (_hasAnimator)
@@ -294,16 +297,21 @@ namespace StarterAssets
                 }
 
                 // stop our velocity dropping infinitely when grounded
-                if (_verticalVelocity < 0.0f)
+                // if (_verticalVelocity < 0.0f)
+                // {
+                //     _verticalVelocity = -2f;
+                // }
+                if (_controller.velocity.y < 0.0f)
                 {
-                    _verticalVelocity = -2f;
+                    _controller.velocity = new Vector3(_controller.velocity.x, -2f, _controller.velocity.z);
                 }
 
                 // Jump
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
-                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                    //_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                    _controller.velocity = new Vector3(_controller.velocity.x, Mathf.Sqrt(JumpHeight * -2f * Gravity), _controller.velocity.z);
 
                     // update animator if using character
                     if (_hasAnimator)
@@ -342,10 +350,11 @@ namespace StarterAssets
             }
 
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
-            if (_verticalVelocity < _terminalVelocity)
-            {
-                _verticalVelocity += Gravity * Time.deltaTime;
-            }
+            // if (_verticalVelocity < _terminalVelocity)
+            // {
+            //     _verticalVelocity += Gravity * Time.deltaTime;
+            // }
+            _controller.AddForce(new Vector3(0, _controller.velocity.y + Gravity * Time.deltaTime, 0), ForceMode.Impulse);
         }
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -376,7 +385,7 @@ namespace StarterAssets
                 if (FootstepAudioClips.Length > 0)
                 {
                     var index = Random.Range(0, FootstepAudioClips.Length);
-                    AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                    AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.centerOfMass), FootstepAudioVolume);
                 }
             }
         }
@@ -385,7 +394,7 @@ namespace StarterAssets
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
-                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.centerOfMass), FootstepAudioVolume);
             }
         }
     }
