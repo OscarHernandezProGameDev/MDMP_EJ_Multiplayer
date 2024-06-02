@@ -15,6 +15,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "FirePrimary",
+                    "type": "Button",
+                    "id": "9648bc1f-cbc5-491e-ba83-5edb69cbab01",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Aim",
                     "type": "PassThrough",
                     "id": "e87634fc-fcaf-469d-8e42-2915ed896f8e",
@@ -168,6 +177,17 @@
                     "processors": "StickDeadzone",
                     "groups": "Gamepad",
                     "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1bc04f9e-c3af-4438-8809-c9f56ae7ca52",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & mouse;KeyboardMouse",
+                    "action": "FirePrimary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

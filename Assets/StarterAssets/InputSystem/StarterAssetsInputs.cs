@@ -52,9 +52,9 @@ namespace StarterAssets
             AimInput(value.isPressed);
         }
 
-        public void OnShoot(InputValue value)
+        public void OnFirePrimary(InputValue value)
         {
-            ShootInput(value.isPressed);
+            FirePrimaryInput(value.isPressed);
         }
 #endif
 
@@ -84,7 +84,7 @@ namespace StarterAssets
             aim = newAimState;
         }
 
-        public void ShootInput(bool newShootState)
+        public void FirePrimaryInput(bool newShootState)
         {
             shoot = newShootState;
         }
