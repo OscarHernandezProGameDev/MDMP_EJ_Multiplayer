@@ -6,6 +6,7 @@ using StarterAssets;
 
 using Unity.Netcode;
 using UnityEngine;
+using System;
 
 
 public class ThirdPersonShooterController : NetworkBehaviour
@@ -18,11 +19,15 @@ public class ThirdPersonShooterController : NetworkBehaviour
     [SerializeField] private Charger charger;
     [SerializeField] private SetPlayerData playerData;
     private StarterAssetsInputs _input;
+    private Vector3 mouseWorldPosition;
+    private Animator _animator;
 
     [Header("Settings")]
     private bool isAiming;
-    private Vector3 mouseWorldPosition;
     [SerializeField] private float rotationSpeed = 20f;
+
+    // animation IDs
+    private int _animIDAim;
 
     public override void OnNetworkSpawn()
     {
@@ -30,6 +35,8 @@ public class ThirdPersonShooterController : NetworkBehaviour
             return;
 
         _input = GetComponent<StarterAssetsInputs>();
+        _animator = GetComponent<Animator>();
+        AssignAnimationIDs();
     }
 
     public override void OnNetworkDespawn()
@@ -47,10 +54,16 @@ public class ThirdPersonShooterController : NetworkBehaviour
         Fire();
     }
 
+    private void AssignAnimationIDs()
+    {
+        _animIDAim = Animator.StringToHash("IsAiming");
+    }
+
     private void SetCameraActive()
     {
         isAiming = _input.aim;
         aimCamera.gameObject.SetActive(isAiming);
+        _animator.SetBool(_animIDAim, isAiming);
         if (isAiming)
             RotateToAimCamera();
     }
