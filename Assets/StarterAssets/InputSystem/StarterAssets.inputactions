@@ -193,11 +193,33 @@
                 },
                 {
                     "name": "",
+                    "id": "e24f2666-8de7-4886-956d-8463907efee2",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "FirePrimary",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "538b2599-d504-486b-beb8-424ba3f91024",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & mouse;KeyboardMouse",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "784ad528-8ff0-469a-8e53-b155a7304511",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
                     "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false

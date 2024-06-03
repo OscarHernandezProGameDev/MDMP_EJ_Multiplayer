@@ -16,16 +16,20 @@ public class PlayerNetworkAnimator : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        networkAnimator.enabled = false;
-        ownerNetworkAnimator.enabled = false;
-        if (HostSingleton.Instance == null)
+        if (HostSingleton.Instance != null)
         {
+            networkAnimator.enabled = false;
             ownerNetworkAnimator.enabled = true;
+            networkAnimator.Animator = null;
+            ownerNetworkAnimator.Animator = animator;
             networkAnimatorComponent = ownerNetworkAnimator;
         }
         else
         {
             networkAnimator.enabled = true;
+            ownerNetworkAnimator.enabled = false;
+            networkAnimator.Animator = animator;
+            ownerNetworkAnimator.Animator = null;
             networkAnimatorComponent = networkAnimator;
         }
     }
@@ -37,6 +41,8 @@ public class PlayerNetworkAnimator : NetworkBehaviour
 
         networkAnimator.enabled = false;
         ownerNetworkAnimator.enabled = false;
+        networkAnimator.Animator = null;
+        ownerNetworkAnimator.Animator = null;
     }
 
     //private void Start()
