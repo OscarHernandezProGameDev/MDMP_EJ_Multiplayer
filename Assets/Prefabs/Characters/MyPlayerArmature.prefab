@@ -670,6 +670,9 @@ GameObject:
   - component: {fileID: 5102124900010650775}
   - component: {fileID: 912871900163835404}
   - component: {fileID: 5663143057747530038}
+  - component: {fileID: 2158564672322167917}
+  - component: {fileID: 6054079092839605017}
+  - component: {fileID: 2463212537289184620}
   - component: {fileID: 5139206555686331136}
   - component: {fileID: 6873792395672066193}
   - component: {fileID: -6790939270078219011}
@@ -873,6 +876,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2158564672322167917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5518046869944313689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2cc3f19c938ad9408b15e6dc862dc70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7458659655771868854}
+  networkAnimatorComponent: {fileID: 0}
+  networkAnimator: {fileID: 6054079092839605017}
+  ownerNetworkAnimator: {fileID: 2463212537289184620}
+--- !u!114 &6054079092839605017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5518046869944313689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 7458659655771868854}
+--- !u!114 &2463212537289184620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5518046869944313689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7438e09bd75803944a076cb452751dcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 7458659655771868854}
 --- !u!114 &5139206555686331136
 MonoBehaviour:
   m_ObjectHideFlags: 0
