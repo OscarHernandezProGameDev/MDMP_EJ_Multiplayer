@@ -23,6 +23,7 @@ public class SetPlayerData : NetworkBehaviour
         {
             UserData userData = null;
 
+#if DEDICATESERVER_ENABLED
             if (IsHost)
             {
                 userData = HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
@@ -31,6 +32,9 @@ public class SetPlayerData : NetworkBehaviour
             {
                 userData = ServerSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
             }
+#else
+            userData = HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
+#endif
 
             playerName.Value = userData.userName;
             TeamIndex.Value = userData.teamIndex;

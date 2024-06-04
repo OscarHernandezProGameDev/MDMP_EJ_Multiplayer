@@ -21,11 +21,20 @@ public class ApplicationController : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 
+#if DEDICATESERVER_ENABLED
         await LaunchInMode(SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null);
+#else
+        await LaunchInMode();
+#endif
     }
 
+#if DEDICATESERVER_ENABLED
     private async Task LaunchInMode(bool isDedicateServer)
+#else
+    private async Task LaunchInMode()
+#endif
     {
+#if DEDICATESERVER_ENABLED
         if (isDedicateServer)
         {
             Application.targetFrameRate = 60;
@@ -38,21 +47,26 @@ public class ApplicationController : MonoBehaviour
         }
         else
         {
-            HostSingleton hostSingleton = Instantiate(hostPrefab);
+#endif
+        HostSingleton hostSingleton = Instantiate(hostPrefab);
 
-            hostSingleton.CreateHost(playerHostServerPrefab);
+        hostSingleton.CreateHost(playerHostServerPrefab);
 
-            ClientSingleton clientSingleton = Instantiate(clientPrefab);
+        ClientSingleton clientSingleton = Instantiate(clientPrefab);
 
-            bool isAuthenticated = await clientSingleton.CreateClient();
+        bool isAuthenticated = await clientSingleton.CreateClient();
 
-            if (isAuthenticated)
-            {
-                clientSingleton.GameManager.GoToMainMenu();
-            }
+        if (isAuthenticated)
+        {
+            clientSingleton.GameManager.GoToMainMenu();
         }
+
+#if DEDICATESERVER_ENABLED
+        }
+#endif
     }
 
+#if DEDICATESERVER_ENABLED
     private IEnumerator LoadGameSceneAsync(ServerSingleton serverSingleton)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(GameScene);
@@ -68,4 +82,5 @@ public class ApplicationController : MonoBehaviour
         Task startServerTask = serverSingleton.GameManager.StartGameServerAsync();
         yield return new WaitUntil(() => startServerTask.IsCompleted);
     }
+#endif
 }

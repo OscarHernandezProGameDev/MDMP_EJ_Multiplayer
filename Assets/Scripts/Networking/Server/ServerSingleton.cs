@@ -9,7 +9,9 @@ public class ServerSingleton : MonoBehaviour
 {
     private static ServerSingleton instance;
 
+#if DEDICATESERVER_ENABLED
     public ServerGameManager GameManager { get; private set; }
+#endif
 
     public static ServerSingleton Instance
     {
@@ -33,6 +35,7 @@ public class ServerSingleton : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+#if DEDICATESERVER_ENABLED
     public async Task CreateServer(NetworkObject playerPrefab)
     {
         await UnityServices.InitializeAsync();
@@ -49,4 +52,5 @@ public class ServerSingleton : MonoBehaviour
     {
         GameManager?.Dispose();
     }
+#endif
 }

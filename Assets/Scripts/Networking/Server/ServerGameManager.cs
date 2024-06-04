@@ -1,3 +1,5 @@
+#if DEDICATESERVER_ENABLED
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +23,7 @@ public class ServerGameManager : IDisposable
     private string serverIP;
     private int serverPort;
     private int serverQueryPort;
-    public NetworkServer NetworkServer;
+    public NetworkServer NetworkServer;    
     private MultiplayAllocationService multiplayAllocationService;
     private MatchplayBackfiller backfiller;
     private Dictionary<string, int> teamIdToTeamIndex = new Dictionary<string, int>();
@@ -143,3 +145,5 @@ public class ServerGameManager : IDisposable
         NetworkServer?.Dispose();
     }
 }
+
+#endif
