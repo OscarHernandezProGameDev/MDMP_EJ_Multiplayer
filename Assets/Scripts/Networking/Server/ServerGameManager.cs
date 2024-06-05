@@ -1,4 +1,4 @@
-#if DEDICATESERVER_ENABLED
+#if UNITY_SERVER || UNITY_EDITOR
 
 using System;
 using System.Collections;

@@ -23,7 +23,7 @@ public class SetPlayerData : NetworkBehaviour
         {
             UserData userData = null;
 
-#if DEDICATESERVER_ENABLED
+#if UNITY_SERVER || UNITY_EDITOR
             if (IsHost)
             {
                 userData = HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);

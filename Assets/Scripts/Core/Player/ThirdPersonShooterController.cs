@@ -18,9 +18,9 @@ public class ThirdPersonShooterController : NetworkBehaviour
     [SerializeField] private GameObject projectileBase;
     [SerializeField] private Charger charger;
     [SerializeField] private SetPlayerData playerData;
-    private StarterAssetsInputs _input;
+    [SerializeField] private StarterAssetsInputs _input;
     private Vector3 mouseWorldPosition;
-    private Animator _animator;
+    [SerializeField] private Animator _animator;
 
     [Header("Settings")]
     private bool isAiming;
@@ -34,8 +34,8 @@ public class ThirdPersonShooterController : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        _input = GetComponent<StarterAssetsInputs>();
-        _animator = GetComponent<Animator>();
+        _input ??= GetComponent<StarterAssetsInputs>();
+        _animator ??= GetComponent<Animator>();
         AssignAnimationIDs();
     }
 
