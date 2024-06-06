@@ -54,7 +54,7 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "8c4abdf8-4099-493a-aa1a-129acec7c3df",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -331,7 +331,7 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "439349f5-185f-4319-91c4-edbdad1224d4",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -607,7 +607,7 @@
                     "path": "*/{Submit}",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR;KeyboardMouse",
+                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR;KeyboardMouse;Touchscreen",
                     "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -636,6 +636,17 @@
                 },
                 {
                     "name": "",
+                    "id": "e034fde5-97b7-4891-9b05-b8e7c6fe0af1",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Touchscreen",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "f1ddf815-7b63-4ec4-97e6-75c34b191adc",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
@@ -652,6 +663,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR;Gamepad",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d4c1de3d-10a3-473e-82ff-a4830590e467",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Touchscreen",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -739,6 +761,17 @@
             "name": "PS4 Controller",
             "bindingGroup": "PS4 Controller",
             "devices": []
+        },
+        {
+            "name": "Touchscreen",
+            "bindingGroup": "Touchscreen",
+            "devices": [
+                {
+                    "devicePath": "<Touchscreen>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
         }
     ]
 }

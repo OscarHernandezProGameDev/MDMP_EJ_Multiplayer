@@ -1,10 +1,10 @@
+using Unity.Netcode;
 using UnityEngine;
 
 namespace StarterAssets
 {
-    public class UICanvasControllerInput : MonoBehaviour
+    public class UICanvasControllerInput : NetworkBehaviour
     {
-
         [Header("Output")]
         public StarterAssetsInputs starterAssetsInputs;
 
@@ -27,7 +27,7 @@ namespace StarterAssets
         {
             starterAssetsInputs.SprintInput(virtualSprintState);
         }
-        
+
     }
 
 }

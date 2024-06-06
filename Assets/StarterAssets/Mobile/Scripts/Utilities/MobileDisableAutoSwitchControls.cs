@@ -7,29 +7,35 @@ This is fixed in Input System 1.1.
 For the time-being; this script will disable a PlayerInput's auto switch control schemes; when project is built to mobile.
 */
 
+using Unity.Netcode;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
-public class MobileDisableAutoSwitchControls : MonoBehaviour
+public class MobileDisableAutoSwitchControls : NetworkBehaviour
 {
-    
-#if ENABLE_INPUT_SYSTEM && (UNITY_IOS || UNITY_ANDROID)
-
     [Header("Target")]
     public PlayerInput playerInput;
+    public Canvas joystickCanvas;
 
-    void Start()
+    public override void OnNetworkSpawn()
     {
-        DisableAutoSwitchControls();
-    }
+        if (!IsOwner)
+            return;
 
+#if ENABLE_INPUT_SYSTEM && (UNITY_IOS || UNITY_ANDROID )
+        joystickCanvas.gameObject.SetActive(true);
+        DisableAutoSwitchControls();
+#else
+        joystickCanvas.gameObject.SetActive(false);
+#endif
+    }
+#if ENABLE_INPUT_SYSTEM && (UNITY_IOS || UNITY_ANDROID)
     void DisableAutoSwitchControls()
     {
         playerInput.neverAutoSwitchControlSchemes = true;
     }
-
 #endif
-    
+
 }
