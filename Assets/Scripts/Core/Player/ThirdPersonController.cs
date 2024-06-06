@@ -99,13 +99,13 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
-#if ENABLE_INPUT_SYSTEM 
-        [SerializeField] private PlayerInput _playerInput;
+#if ENABLE_INPUT_SYSTEM
+        private PlayerInput _playerInput;
 #endif
-        [SerializeField] private Animator _animator;
+        private Animator _animator;
         //private CharacterController _controller;
-        [SerializeField] private Rigidbody _controller;
-        [SerializeField] private StarterAssetsInputs _input;
+        private Rigidbody _controller;
+        private StarterAssetsInputs _input;
         private GameObject _mainCamera;
 
         private const float _threshold = 0.01f;
@@ -135,15 +135,15 @@ namespace StarterAssets
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
 
-            _playerInput ??= GetComponent<PlayerInput>();
+            _playerInput = GetComponent<PlayerInput>();
             _playerInput.enabled = true;
 
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
 
-            _hasAnimator = _animator != null || TryGetComponent(out _animator);
+            _hasAnimator = TryGetComponent(out _animator);
             //_controller = GetComponent<CharacterController>();
-            _controller ??= GetComponent<Rigidbody>();
-            _input ??= GetComponent<StarterAssetsInputs>();
+            _controller = GetComponent<Rigidbody>();
+            _input = GetComponent<StarterAssetsInputs>();
 
             AssignAnimationIDs();
 
@@ -154,6 +154,9 @@ namespace StarterAssets
 
         private void FixedUpdate()
         {
+            if (!IsOwner)
+                return;
+
             _hasAnimator = TryGetComponent(out _animator);
 
             JumpAndGravity();
@@ -163,6 +166,9 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
+            if (!IsOwner)
+                return;
+
             CameraRotation();
         }
 
