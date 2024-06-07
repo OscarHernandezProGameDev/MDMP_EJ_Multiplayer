@@ -3994,6 +3994,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 9152553597154632826}
   joystickCanvas: {fileID: 2164168978206022715}
+  enabledIfEditorMode: 1
 --- !u!1 &8733547409107892913
 GameObject:
   m_ObjectHideFlags: 0

@@ -670,7 +670,7 @@
                 {
                     "name": "",
                     "id": "d4c1de3d-10a3-473e-82ff-a4830590e467",
-                    "path": "<Touchscreen>/Press",
+                    "path": "<Touchscreen>/touch*/Press",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Touchscreen",
