@@ -72,7 +72,11 @@ public class ClientGameManager : IDisposable
 
         UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
 
+#if !UNITY_WEBGL
         RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
+#else
+        RelayServerData relayServerData = new RelayServerData(allocation, "wss");
+#endif
         transport.SetRelayServerData(relayServerData);
 
         ConnectClient();

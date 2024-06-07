@@ -1,9 +1,8 @@
-using Unity.Netcode;
 using UnityEngine;
 
 namespace StarterAssets
 {
-    public class UICanvasControllerInput : NetworkBehaviour
+    public class UICanvasControllerInput : MonoBehaviour
     {
         [Header("Output")]
         public StarterAssetsInputs starterAssetsInputs;

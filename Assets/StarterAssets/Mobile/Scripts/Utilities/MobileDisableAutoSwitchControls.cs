@@ -49,7 +49,7 @@ public class MobileDisableAutoSwitchControls : NetworkBehaviour
         if (!Application.isMobilePlatform)
             return;
 
-        playerInput.SwitchCurrentActionMap("UI");
+        //playerInput.SwitchCurrentActionMap("UI");
         DisableAutoSwitchControls();
     }
 
