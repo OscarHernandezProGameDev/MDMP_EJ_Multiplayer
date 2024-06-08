@@ -23,22 +23,18 @@ public class MobileDisableAutoSwitchControls : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (!IsOwner)
-        {
-            joystickCanvas.gameObject.SetActive(false);
-
             return;
-        }
+
+        Debug.Log($"Application.isEditor: {Application.isEditor}");
+        Debug.Log($"Application.isMobilePlatform: {Application.isMobilePlatform}");
 
         if (Application.isEditor)
         {
             if (!enabledIfEditorMode)
-            {
                 joystickCanvas.gameObject.SetActive(false);
-
-                return;
-            }
+            return;
         }
-        else if (!Application.isMobilePlatform)
+        if (!Application.isMobilePlatform)
         {
             joystickCanvas.gameObject.SetActive(false);
 
@@ -46,11 +42,9 @@ public class MobileDisableAutoSwitchControls : NetworkBehaviour
         }
 
         joystickCanvas.gameObject.SetActive(true);
-        if (!Application.isMobilePlatform)
-            return;
 
         //playerInput.SwitchCurrentActionMap("UI");
-        DisableAutoSwitchControls();
+        //DisableAutoSwitchControls();
     }
 
     void DisableAutoSwitchControls()
