@@ -182,6 +182,17 @@
                 },
                 {
                     "name": "",
+                    "id": "1eb5e647-9ead-45dc-95f2-22c4b7197c00",
+                    "path": "<Touchscreen>/radius",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Touchscreen",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1bc04f9e-c3af-4438-8809-c9f56ae7ca52",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
