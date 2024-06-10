@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class OwnerNetworkAnimator : NetworkAnimator
 {
+    //protected override bool OnIsServerAuthoritative()
+    //{
+    //    return IsHost ? false : base.OnIsServerAuthoritative();
+    //}
     protected override bool OnIsServerAuthoritative()
     {
-        return IsHost ? false : base.OnIsServerAuthoritative();
+        return false;
     }
 }

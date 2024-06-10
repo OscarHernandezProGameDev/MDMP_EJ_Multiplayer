@@ -147,7 +147,7 @@ namespace StarterAssets
             _input = GetComponent<StarterAssetsInputs>();
             _virtualJoysticks = FindAnyObjectByType<VirtualJoysticks>();
 
-            _virtualJoysticks?.ActiveVirtualJoystick(_input, _playerInput);
+            _virtualJoysticks?.ActiveVirtualJoystick(_input);
 
             AssignAnimationIDs();
 
