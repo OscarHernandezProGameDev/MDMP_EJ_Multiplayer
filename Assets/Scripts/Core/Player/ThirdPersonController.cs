@@ -107,6 +107,7 @@ namespace StarterAssets
         private Rigidbody _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
+        [SerializeField] private VirtualJoysticks _virtualJoysticks;
 
         private const float _threshold = 0.01f;
 
@@ -144,6 +145,9 @@ namespace StarterAssets
             //_controller = GetComponent<CharacterController>();
             _controller = GetComponent<Rigidbody>();
             _input = GetComponent<StarterAssetsInputs>();
+            _virtualJoysticks = FindAnyObjectByType<VirtualJoysticks>();
+
+            _virtualJoysticks?.ActiveVirtualJoystick(_input, _playerInput);
 
             AssignAnimationIDs();
 

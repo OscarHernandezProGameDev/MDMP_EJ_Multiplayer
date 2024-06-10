@@ -100063,14 +100063,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1273898661919608629, guid: 2005554cf22ea1e40a05ef30cfff7adb, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3035870542321379208, guid: 2005554cf22ea1e40a05ef30cfff7adb, type: 3}
-      propertyPath: joystickCanvas
-      value: 
-      objectReference: {fileID: 4172852952490390624}
     - target: {fileID: 6207519579759518287, guid: 2005554cf22ea1e40a05ef30cfff7adb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 821.0329
