@@ -128,7 +128,23 @@ namespace StarterAssets
         public override void OnNetworkSpawn()
         {
             if (!IsOwner)
+            {
+                if (TryGetComponent<PlayerInput>(out var playerInput))
+                    playerInput.enabled = false;
+
                 return;
+            }
+
+            if (!IsClient)
+            {
+                // para OnFootstep y OnLand
+                //_controller = GetComponent<CharacterController>();
+                _controller = GetComponent<Rigidbody>();
+                if (TryGetComponent<PlayerInput>(out var playerInput))
+                    playerInput.enabled = false;
+
+                return;
+            }
 
             // get a reference to our main camera
             if (_mainCamera == null)
@@ -158,7 +174,7 @@ namespace StarterAssets
 
         private void FixedUpdate()
         {
-            if (!IsOwner)
+            if (!IsClient || !IsOwner)
                 return;
 
             _hasAnimator = TryGetComponent(out _animator);
@@ -170,7 +186,7 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
-            if (!IsOwner)
+            if (!IsClient || !IsOwner)
                 return;
 
             CameraRotation();

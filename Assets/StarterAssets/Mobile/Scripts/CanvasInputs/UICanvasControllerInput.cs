@@ -7,6 +7,8 @@ namespace StarterAssets
         [Header("Output")]
         public StarterAssetsInputs starterAssetsInputs;
 
+        [SerializeField] private bool leaderboardStatus = false;
+
         public void VirtualMoveInput(Vector2 virtualMoveDirection)
         {
             starterAssetsInputs.MoveInput(virtualMoveDirection);
@@ -27,11 +29,21 @@ namespace StarterAssets
             starterAssetsInputs.SprintInput(virtualSprintState);
         }
 
+        public void VirtualAimInput(bool virtualSprintState)
+        {
+            starterAssetsInputs.AimInput(virtualSprintState);
+        }
+
         public void VirtualFirePrimaryInput(bool virtualSprintState)
         {
             starterAssetsInputs.FirePrimaryInput(virtualSprintState);
         }
 
+        public void VirtualLeaderboardInput(bool virtualSprintState)
+        {
+            leaderboardStatus = !leaderboardStatus;
+            starterAssetsInputs.LeaderboardInput(leaderboardStatus);
+        }
     }
 
 }

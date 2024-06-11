@@ -100059,14 +100059,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: VirtualJoysticks
       objectReference: {fileID: 0}
-    - target: {fileID: 197713987020817115, guid: 2005554cf22ea1e40a05ef30cfff7adb, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3035870542321379208, guid: 2005554cf22ea1e40a05ef30cfff7adb, type: 3}
-      propertyPath: enabledIfEditorMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6207519579759518287, guid: 2005554cf22ea1e40a05ef30cfff7adb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 821.0329
@@ -100106,14 +100098,6 @@ PrefabInstance:
     - target: {fileID: 6207519579759518287, guid: 2005554cf22ea1e40a05ef30cfff7adb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7694113317813784448, guid: 2005554cf22ea1e40a05ef30cfff7adb, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 1000886771
-      objectReference: {fileID: 0}
-    - target: {fileID: 7694113317813784448, guid: 2005554cf22ea1e40a05ef30cfff7adb, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 842555646
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

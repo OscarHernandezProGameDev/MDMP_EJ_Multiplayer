@@ -1,3 +1,4 @@
+using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -7,7 +8,7 @@ using UnityEngine.UIElements;
 public class LeaderboardControler : NetworkBehaviour
 {
     [Header("Referencias")]
-    [SerializeField] private InputReader inputReader;
+    [SerializeField] private StarterAssetsInputs starterAssetsInputs;
     private GameObject leaderboard;
 
     public override void OnNetworkSpawn()
@@ -15,7 +16,7 @@ public class LeaderboardControler : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        inputReader.OnLeaderboardEvent += HandleLeaderboard;
+        starterAssetsInputs.OnLeaderboardEvent += HandleLeaderboard;
         leaderboard = FindAnyObjectByType<Leaderboard>().transform.GetChild(0).gameObject;
         leaderboard.SetActive(false);
     }
@@ -25,7 +26,7 @@ public class LeaderboardControler : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        inputReader.OnLeaderboardEvent -= HandleLeaderboard;
+        starterAssetsInputs.OnLeaderboardEvent -= HandleLeaderboard;
     }
 
     private void HandleLeaderboard(bool isBottonPressed)

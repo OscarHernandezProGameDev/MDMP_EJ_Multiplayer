@@ -966,11 +966,51 @@ MonoBehaviour:
     m_ActionName: Player/Sprint[/Keyboard/leftShift,/XInputControllerWindows/leftTrigger]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: e4ce1614-c754-48c1-9103-33130441661f
-    m_ActionName: UI/New action
+    m_ActionId: 9648bc1f-cbc5-491e-ba83-5edb69cbab01
+    m_ActionName: Player/FirePrimary[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e87634fc-fcaf-469d-8e42-2915ed896f8e
+    m_ActionName: Player/Aim[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 627f2ff3-140c-4109-8c40-3c8b2e7ae09a
+    m_ActionName: Player/Leaderboard[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 710a2648-9940-48c0-99c8-66984f87560e
+    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 439349f5-185f-4319-91c4-edbdad1224d4
+    m_ActionName: UI/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 72dd63e3-13f3-4a77-ac80-01cdb78f788c
+    m_ActionName: UI/Cancel[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b503a484-d0bf-4baf-888a-3714f97ceda0
+    m_ActionName: UI/Point[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 15018e98-f9c2-479e-bb4f-c0f32f0193f3
+    m_ActionName: UI/Click[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 315a9084-33f6-445f-87e9-9c9c731ac962
+    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 77bc15f3-ece7-4cff-9cfd-0d064ca0c6f3
+    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d1a0ac50-e8ba-4616-8ae1-bedea82d886c
+    m_ActionName: UI/RightClick[/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: f62a4b92-ef5e-4175-8f4c-c9075429d32c
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!143 &6101490855732402263
@@ -1315,7 +1355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9582999de38ca1540886492d0290ed85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputReader: {fileID: 11400000, guid: 53e916698d421eb68b6522df1cb326aa, type: 2}
+  starterAssetsInputs: {fileID: 8659885050043512063}
 --- !u!114 &6698419217110367782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1366,6 +1406,7 @@ MonoBehaviour:
   sprint: 0
   aim: 0
   shoot: 0
+  leaderboard: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1

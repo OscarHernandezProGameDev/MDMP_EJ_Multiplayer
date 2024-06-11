@@ -15,6 +15,7 @@ namespace StarterAssets
         public bool sprint;
         public bool aim;
         public bool shoot;
+        public bool leaderboard;
 
         [Header("Movement Settings")]
         public bool analogMovement;
@@ -23,7 +24,40 @@ namespace StarterAssets
         public bool cursorLocked = true;
         public bool cursorInputForLook = true;
 
+        public event Action<bool> OnLeaderboardEvent;
+
+        private PlayerInput _playerInput;
+
+        private void Awake()
+        {
+            _playerInput = GetComponent<PlayerInput>();
+        }
+
+        private void OnEnable()
+        {
+            _playerInput.actions["Leaderboard"].performed += OnLeaderboard;
+            _playerInput.actions["Leaderboard"].canceled += OnLeaderboard;
+        }
+
+        private void OnDisable()
+        {
+            _playerInput.actions["Leaderboard"].performed -= OnLeaderboard;
+            _playerInput.actions["Leaderboard"].canceled -= OnLeaderboard;
+        }
+
 #if ENABLE_INPUT_SYSTEM
+        public void OnLeaderboard(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                OnLeaderboardEvent?.Invoke(true);
+            }
+            else if (context.canceled)
+            {
+                OnLeaderboardEvent?.Invoke(false);
+            }
+        }
+
         public void OnMove(InputValue value)
         {
             MoveInput(value.Get<Vector2>());
@@ -56,8 +90,12 @@ namespace StarterAssets
         {
             FirePrimaryInput(value.isPressed);
         }
-#endif
 
+        //public void OnLeaderboard(InputValue value)
+        //{
+        //    LeaderboardInput(value.isPressed);
+        //}
+#endif
 
         public void MoveInput(Vector2 newMoveDirection)
         {
@@ -87,6 +125,12 @@ namespace StarterAssets
         public void FirePrimaryInput(bool newShootState)
         {
             shoot = newShootState;
+        }
+
+        public void LeaderboardInput(bool newLeaderboardState)
+        {
+            //leaderboard = newLeaderboardState;
+            OnLeaderboardEvent?.Invoke(newLeaderboardState);
         }
 
         private void OnApplicationFocus(bool hasFocus)
