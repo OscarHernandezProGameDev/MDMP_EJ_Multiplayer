@@ -388,6 +388,9 @@ namespace StarterAssets
 
         private void OnFootstep(AnimationEvent animationEvent)
         {
+            if (!IsOwner)
+                return;
+
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 if (FootstepAudioClips.Length > 0)
@@ -400,6 +403,9 @@ namespace StarterAssets
 
         private void OnLand(AnimationEvent animationEvent)
         {
+            if (!IsOwner)
+                return;
+
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.centerOfMass), FootstepAudioVolume);
