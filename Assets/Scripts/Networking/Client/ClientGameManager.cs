@@ -76,6 +76,7 @@ public class ClientGameManager : IDisposable
         RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
 #else
         RelayServerData relayServerData = new RelayServerData(allocation, "wss");
+        transport.UseWebSockets = true;
 #endif
         transport.SetRelayServerData(relayServerData);
 
