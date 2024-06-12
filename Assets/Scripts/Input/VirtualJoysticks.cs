@@ -55,10 +55,17 @@ public class VirtualJoysticks : MonoBehaviour
             this.starterAssetsInputs = starterAssetsInputs;
 
         if (this.starterAssetsInputs is not null)
-            joystickCanvas.starterAssetsInputs = starterAssetsInputs;
+        {
+            joystickCanvas.starterAssetsInputs = this.starterAssetsInputs;
 
-        starterAssetsInputs.cursorLocked = false;
-        starterAssetsInputs.cursorInputForLook = false;
-        joystickCanvas.gameObject.SetActive(true);
+            this.starterAssetsInputs.cursorLocked = false;
+            this.starterAssetsInputs.cursorInputForLook = false;
+            joystickCanvas.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("this.starterAssetsInputs is null");
+            joystickCanvas.gameObject.SetActive(false);
+        }
     }
 }
