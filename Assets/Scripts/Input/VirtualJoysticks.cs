@@ -39,19 +39,24 @@ public class VirtualJoysticks : MonoBehaviour
         isModeMobile = true;
     }
 
-    public void ActiveVirtualJoystick(StarterAssetsInputs starterAssetsInputs)
+    public void ActiveVirtualJoystick(StarterAssetsInputs starterAssetsInputs = null)
     {
         StartCoroutine(ActiveVirtualJoystickCoroutine(starterAssetsInputs));
     }
 
-    IEnumerator ActiveVirtualJoystickCoroutine(StarterAssetsInputs starterAssetsInputs)
+    IEnumerator ActiveVirtualJoystickCoroutine(StarterAssetsInputs starterAssetsInputs = null)
     {
         yield return new WaitForEndOfFrame();
 
         if (!isModeMobile)
             yield break;
 
-        this.starterAssetsInputs = joystickCanvas.starterAssetsInputs = starterAssetsInputs;
+        if (starterAssetsInputs is not null)
+            this.starterAssetsInputs = starterAssetsInputs;
+
+        if (this.starterAssetsInputs is not null)
+            joystickCanvas.starterAssetsInputs = starterAssetsInputs;
+
         starterAssetsInputs.cursorLocked = false;
         starterAssetsInputs.cursorInputForLook = false;
         joystickCanvas.gameObject.SetActive(true);

@@ -161,9 +161,8 @@ namespace StarterAssets
             //_controller = GetComponent<CharacterController>();
             _controller = GetComponent<Rigidbody>();
             _input = GetComponent<StarterAssetsInputs>();
-            _virtualJoysticks = FindAnyObjectByType<VirtualJoysticks>();
 
-            _virtualJoysticks?.ActiveVirtualJoystick(_input);
+            _virtualJoysticks?.ActiveVirtualJoystick();
 
             AssignAnimationIDs();
 
