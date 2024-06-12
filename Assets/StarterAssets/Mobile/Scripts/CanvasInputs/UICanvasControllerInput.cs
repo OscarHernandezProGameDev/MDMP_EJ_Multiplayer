@@ -42,7 +42,7 @@ namespace StarterAssets
         public void VirtualLeaderboardInput(bool virtualSprintState)
         {
             leaderboardStatus = !leaderboardStatus;
-            starterAssetsInputs.LeaderboardInput(leaderboardStatus);
+            starterAssetsInputs.LeaderboardInput(virtualSprintState);
         }
     }
 
