@@ -29,10 +29,9 @@ public class HostGameManager : IDisposable
     private const string GameScene = "Game";
 
     //public HostGameManager(NetworkObject playerPrefab)
-    public HostGameManager()
-    {
-        //this.playerPrefab = playerPrefab;
-    }
+    //{
+    //    this.playerPrefab = playerPrefab;
+    //}
 
     public async Task StartHostAsync(bool isPrivate)
     {

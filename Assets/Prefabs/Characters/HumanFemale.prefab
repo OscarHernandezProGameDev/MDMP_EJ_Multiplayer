@@ -7207,9 +7207,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2026777309561252659, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 2026777309561252659, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 133
+      objectReference: {fileID: 0}
+    - target: {fileID: 2026777309561252659, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 26
+      objectReference: {fileID: 0}
     - target: {fileID: 2301775949477818232, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
       propertyPath: m_Name
       value: HumanFemale
+      objectReference: {fileID: 0}
+    - target: {fileID: 3383268718600544803, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3383268718600544803, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3383268718600544803, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 3383268718600544803, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
       propertyPath: m_LocalPosition.x

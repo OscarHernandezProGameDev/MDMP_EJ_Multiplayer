@@ -76,6 +76,7 @@ public class ApplicationController : MonoBehaviour
             yield return null;
         }
 
+        //Task createServerTask = serverSingleton.CreateServer(playerPrefab);
         Task createServerTask = serverSingleton.CreateServer();
         yield return new WaitUntil(() => createServerTask.IsCompleted);
 
