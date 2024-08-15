@@ -85,6 +85,8 @@ public class ClientGameManager : IDisposable
 
     private void ConnectClient()
     {
+        userData.selectedCharacterPrefabName = CaracterSelect.Instance.GetSelectdPrefabName();
+
         string payload = JsonUtility.ToJson(userData);
         byte[] payloadByte = Encoding.UTF8.GetBytes(payload);
 

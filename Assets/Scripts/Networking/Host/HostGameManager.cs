@@ -18,7 +18,7 @@ using UnityEngine.SceneManagement;
 public class HostGameManager : IDisposable
 {
     private Allocation allocation;
-    private NetworkObject playerPrefab;
+    //private NetworkObject playerPrefab;
 
     public string JoinCode;
     private string lobbyId;
@@ -28,27 +28,28 @@ public class HostGameManager : IDisposable
     private const int MaxConnections = 10;
     private const string GameScene = "Game";
 
-    public HostGameManager(NetworkObject playerPrefab)
+    //public HostGameManager(NetworkObject playerPrefab)
+    public HostGameManager()
     {
-        this.playerPrefab = playerPrefab;
+        //this.playerPrefab = playerPrefab;
     }
 
     public async Task StartHostAsync(bool isPrivate)
     {
-		try
-		{
-	        allocation = await Relay.Instance.CreateAllocationAsync(MaxConnections);
-		}
-		catch (Exception ex)
-		{
-			Debug.LogWarning(ex);
-			return;
-		}
+        try
+        {
+            allocation = await Relay.Instance.CreateAllocationAsync(MaxConnections);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning(ex);
+            return;
+        }
 
         try
         {
             JoinCode = await Relay.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            Debug.Log($"Join code: { JoinCode }");
+            Debug.Log($"Join code: {JoinCode}");
         }
         catch (Exception ex)
         {
@@ -96,12 +97,14 @@ public class HostGameManager : IDisposable
             await Task.Delay(10);
         }
 
-        NetworkServer = new NetworkServer(NetworkManager.Singleton, playerPrefab);
+        //NetworkServer = new NetworkServer(NetworkManager.Singleton, playerPrefab);
+        NetworkServer = new NetworkServer(NetworkManager.Singleton);
 
         UserData userData = new UserData
         {
             userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
-            userAuthId = AuthenticationService.Instance.PlayerId
+            userAuthId = AuthenticationService.Instance.PlayerId,
+            selectedCharacterPrefabName = CaracterSelect.Instance.GetSelectdPrefabName()
         };
         string payload = JsonUtility.ToJson(userData);
         byte[] payloadByte = Encoding.UTF8.GetBytes(payload);
@@ -116,7 +119,7 @@ public class HostGameManager : IDisposable
     private IEnumerator HeartbeartLobby(float waitTimeSeconds)
     {
         WaitForSecondsRealtime delay = new WaitForSecondsRealtime(waitTimeSeconds);
-        while(true)
+        while (true)
         {
             Lobbies.Instance.SendHeartbeatPingAsync(lobbyId);
             yield return delay;

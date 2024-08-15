@@ -20,10 +20,11 @@ public class NetworkServer : IDisposable
 
     private NetworkObject playerPrefab;
 
-    public NetworkServer(NetworkManager networkManager, NetworkObject playerPrefab)
+    //public NetworkServer(NetworkManager networkManager, NetworkObject playerPrefab)
+    public NetworkServer(NetworkManager networkManager)
     {
         this._networkManager = networkManager;
-        this.playerPrefab = playerPrefab;
+        //this.playerPrefab = playerPrefab;
 
         networkManager.ConnectionApprovalCallback += ApprovalCheck;
         networkManager.OnServerStarted += OnNetworkReady;
@@ -43,6 +44,25 @@ public class NetworkServer : IDisposable
 
         clientIdToAuth[request.ClientNetworkId] = userData.userAuthId;
         authIdToUserData[userData.userAuthId] = userData;
+
+        foreach (var prefab in CaracterSelect.Instance.charactersPrefabs)
+        {
+            if(prefab.name == userData.selectedCharacterPrefabName)
+            {
+                playerPrefab = prefab;
+
+                break;
+            }
+        }
+
+        if(playerPrefab == null)
+        {
+            Debug.LogError($"Player prefab '{userData.selectedCharacterPrefabName}' not found");
+            response.Approved = false;
+
+            return;
+        }
+
         OnUserJoined?.Invoke(userData);
 
         _ = SpawnPlayerDelayed(request.ClientNetworkId);

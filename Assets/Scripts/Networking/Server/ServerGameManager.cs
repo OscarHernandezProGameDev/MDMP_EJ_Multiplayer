@@ -23,17 +23,19 @@ public class ServerGameManager : IDisposable
     private string serverIP;
     private int serverPort;
     private int serverQueryPort;
-    public NetworkServer NetworkServer;    
+    public NetworkServer NetworkServer;
     private MultiplayAllocationService multiplayAllocationService;
     private MatchplayBackfiller backfiller;
     private Dictionary<string, int> teamIdToTeamIndex = new Dictionary<string, int>();
 
-    public ServerGameManager(string serverIP, int serverPort, int serverQueryPort, NetworkManager networkManager, NetworkObject playerPrefab)
+    //public ServerGameManager(string serverIP, int serverPort, int serverQueryPort, NetworkManager networkManager, NetworkObject playerPrefab)
+    public ServerGameManager(string serverIP, int serverPort, int serverQueryPort, NetworkManager networkManager)
     {
         this.serverIP = serverIP;
         this.serverPort = serverPort;
         this.serverQueryPort = serverQueryPort;
-        NetworkServer = new NetworkServer(networkManager, playerPrefab);
+        //NetworkServer = new NetworkServer(networkManager,playerPrefab);
+        NetworkServer = new NetworkServer(networkManager);
         multiplayAllocationService = new MultiplayAllocationService();
     }
 

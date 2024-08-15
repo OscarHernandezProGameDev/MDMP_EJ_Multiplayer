@@ -12,7 +12,7 @@ public class ApplicationController : MonoBehaviour
     [SerializeField] private HostSingleton hostPrefab;
     [SerializeField] private ServerSingleton serverPrefab;
     [SerializeField] private ApplicationData applicationData;
-    [SerializeField] private NetworkObject playerPrefab;
+    //[SerializeField] private NetworkObject playerPrefab;
 
     private const string GameScene = "Game";
 
@@ -49,7 +49,8 @@ public class ApplicationController : MonoBehaviour
 #endif
         HostSingleton hostSingleton = Instantiate(hostPrefab);
 
-        hostSingleton.CreateHost(playerPrefab);
+        //hostSingleton.CreateHost(playerPrefab);
+        hostSingleton.CreateHost();
 
         ClientSingleton clientSingleton = Instantiate(clientPrefab);
 
@@ -75,7 +76,7 @@ public class ApplicationController : MonoBehaviour
             yield return null;
         }
 
-        Task createServerTask = serverSingleton.CreateServer(playerPrefab);
+        Task createServerTask = serverSingleton.CreateServer();
         yield return new WaitUntil(() => createServerTask.IsCompleted);
 
         Task startServerTask = serverSingleton.GameManager.StartGameServerAsync();

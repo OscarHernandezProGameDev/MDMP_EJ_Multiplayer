@@ -26,6 +26,8 @@ public class UserData
     public string userAuthId;
     public int teamIndex = -1;
     public GameInfo userGamePreferences = new GameInfo();
+    public string selectedCharacterPrefabName;
+
 }
 
 [Serializable]

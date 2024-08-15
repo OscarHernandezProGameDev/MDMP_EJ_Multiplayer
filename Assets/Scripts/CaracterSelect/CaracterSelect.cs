@@ -5,12 +5,19 @@ using UnityEngine;
 
 public class CaracterSelect : MonoBehaviour
 {
+    public static CaracterSelect Instance;
+
     private NetworkObject SelectedCharacterPrefab;
 
     [SerializeField] private GameObject[] characters;
     [SerializeField] private int selectedCharacterIndex = 0;
 
     public NetworkObject[] charactersPrefabs;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public void SelectNextCharacter()
     {

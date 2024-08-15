@@ -36,16 +36,20 @@ public class ServerSingleton : MonoBehaviour
     }
 
 #if UNITY_SERVER || UNITY_EDITOR
-    public async Task CreateServer(NetworkObject playerPrefab)
+    public async Task CreateServer()
     {
         await UnityServices.InitializeAsync();
+        //GameManager = new ServerGameManager(
+        //    ApplicationData.IP(),
+        //    ApplicationData.Port(),
+        //    ApplicationData.QPort(),
+        //    NetworkManager.Singleton,
+        //    playerPrefab); 
         GameManager = new ServerGameManager(
             ApplicationData.IP(),
             ApplicationData.Port(),
             ApplicationData.QPort(),
-            NetworkManager.Singleton,
-            playerPrefab
-        );
+            NetworkManager.Singleton);
     }
 
     private void OnDestroy()

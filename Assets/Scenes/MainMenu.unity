@@ -512,9 +512,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1000584063}
-        m_TargetAssemblyTypeName: QuitApp, Assembly-CSharp
-        m_MethodName: QuitGame
+      - m_Target: {fileID: 1034570072}
+        m_TargetAssemblyTypeName: CaracterSelect, Assembly-CSharp
+        m_MethodName: SelectNextCharacter
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2220,9 +2220,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1000584063}
-        m_TargetAssemblyTypeName: QuitApp, Assembly-CSharp
-        m_MethodName: QuitGame
+      - m_Target: {fileID: 1034570072}
+        m_TargetAssemblyTypeName: CaracterSelect, Assembly-CSharp
+        m_MethodName: ConfirmCharacter
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2897,12 +2897,18 @@ MonoBehaviour:
   characters:
   - {fileID: 570403170}
   - {fileID: 1725844126}
-  - {fileID: 0}
+  - {fileID: 1794264955}
   - {fileID: 5381681097835909386}
   - {fileID: 254686449928669342}
   - {fileID: 1497508513121665}
   selectedCharacterIndex: 0
-  charactersPrefabs: []
+  charactersPrefabs:
+  - {fileID: 6600492573690828505, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
+  - {fileID: 5294481413720464807, guid: 4cd2d3b47db6fb3409b48924c2079dee, type: 3}
+  - {fileID: 4510615586014490843, guid: cb6321b2304114a47a6ba340a6d2b5be, type: 3}
+  - {fileID: 4510615586014490843, guid: 19d80081ce96a6b4a8f3d67276e064e2, type: 3}
+  - {fileID: 7959253058073767099, guid: c5e8bb2bebc232141a227f4e27643c79, type: 3}
+  - {fileID: 5294481413720464807, guid: b878f55ed9ae5e24c99344f1d87c906f, type: 3}
 --- !u!1 &1070005301
 GameObject:
   m_ObjectHideFlags: 0
@@ -4465,9 +4471,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1000584063}
-        m_TargetAssemblyTypeName: QuitApp, Assembly-CSharp
-        m_MethodName: QuitGame
+      - m_Target: {fileID: 1034570072}
+        m_TargetAssemblyTypeName: CaracterSelect, Assembly-CSharp
+        m_MethodName: SelectPreviousCharacter
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5009,7 +5015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5019141003657056257, guid: dcd3787c868115245a180165768f1f46, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5627733137378115691, guid: dcd3787c868115245a180165768f1f46, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5059,6 +5065,11 @@ PrefabInstance:
 --- !u!4 &1794264954 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5627733137378115691, guid: dcd3787c868115245a180165768f1f46, type: 3}
+  m_PrefabInstance: {fileID: 1794264953}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1794264955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5019141003657056257, guid: dcd3787c868115245a180165768f1f46, type: 3}
   m_PrefabInstance: {fileID: 1794264953}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1794771993
@@ -6306,7 +6317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3687961311404974704, guid: 84eb734e168783d4b8e85bedbc9be3d2, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7138514058346484740, guid: 84eb734e168783d4b8e85bedbc9be3d2, type: 3}
       propertyPath: m_LocalPosition.x
