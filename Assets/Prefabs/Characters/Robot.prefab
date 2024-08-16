@@ -2650,12 +2650,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6600492573690828505, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1657990722
+      value: 127067196
       objectReference: {fileID: 0}
     - target: {fileID: 8424619090549170663, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: 36078ab0369161e49a29d349ae3e0739, type: 3}
+      objectReference: {fileID: 9000000, guid: b5f71c859f9f9bf41badda8a4650082c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 729399389965163344, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
