@@ -64,6 +64,37 @@ Transform:
   - {fileID: 9131165502321253782}
   m_Father: {fileID: 3999258624429757155}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1017560937103034293
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7559909216644874579}
+  m_Layer: 0
+  m_Name: ProjectileSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7559909216644874579
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017560937103034293}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.071, y: 0.071, z: 0.527}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9053812232587324115}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1286455406096137633
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +152,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1333369012508618522}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9998767, z: -0, w: 0.015707491}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -111.7, z: -1000}
   m_LocalScale: {x: 70.00003, y: 70, z: 70.00003}
   m_ConstrainProportionsScale: 0
@@ -637,7 +668,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3194583117804375763}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9998767, z: -0, w: 0.015707491}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -111.7, z: -1000}
   m_LocalScale: {x: 70.00003, y: 70, z: 70.00003}
   m_ConstrainProportionsScale: 0
@@ -1696,7 +1727,7 @@ Transform:
   m_GameObject: {fileID: 8770304793770723240}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.375, z: 0}
+  m_LocalPosition: {x: 0, y: -13.5, z: -1078.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1828,11 +1859,11 @@ PrefabInstance:
     - target: {fileID: 3408044299713867951, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
       propertyPath: CinemachineCameraTarget
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8770304793770723240}
     - target: {fileID: 4536927022253595074, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
       propertyPath: projectileSpwanPoint
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7559909216644874579}
     - target: {fileID: 4662547530256216684, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.11188972
@@ -2009,7 +2040,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4973641411836888, guid: e4b5e619f4a1e5844b32eec0d702d1b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7559909216644874579}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4b5e619f4a1e5844b32eec0d702d1b6, type: 3}
 --- !u!4 &9053812232587324115 stripped

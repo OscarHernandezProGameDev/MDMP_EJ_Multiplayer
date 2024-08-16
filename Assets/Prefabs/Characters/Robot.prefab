@@ -1013,13 +1013,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4561713416724118219}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4328987510293473629}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4594697021306202140
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,6 +1186,37 @@ Transform:
   m_Children:
   - {fileID: 90682887735072739}
   m_Father: {fileID: 6124568931774314776}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5037806297566940164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6609485095006806077}
+  m_Layer: 0
+  m_Name: ProjectileSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6609485095006806077
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5037806297566940164}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.89340293, y: 0.0346913, z: -0.44742396, w: -0.020966498}
+  m_LocalPosition: {x: -0.055, y: 0.09, z: 0.687}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6724673084695247774}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5394194063765381424
 GameObject:
@@ -1559,14 +1590,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6359153430568259383}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7462620017354895096}
   m_Father: {fileID: 4328987510293473629}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6837536032634757498
 GameObject:
   m_ObjectHideFlags: 0
@@ -2265,7 +2296,7 @@ Transform:
   m_GameObject: {fileID: 8770304793770723240}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.375, z: 0}
+  m_LocalPosition: {x: 0, y: 1.375, z: -0.572}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2327,13 +2358,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8904680063101064895}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4328987510293473629}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5161293661058758407
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -2520,11 +2551,11 @@ PrefabInstance:
     - target: {fileID: 3408044299713867951, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
       propertyPath: CinemachineCameraTarget
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8770304793770723240}
     - target: {fileID: 4536927022253595074, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
       propertyPath: projectileSpwanPoint
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6609485095006806077}
     - target: {fileID: 4662547530256216684, guid: d690162b1f1ea0493b9129473db6bb7a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.11188972
@@ -2704,7 +2735,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4970250803505614, guid: b2db02f91acb81c499a6fe0235afc719, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6609485095006806077}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2db02f91acb81c499a6fe0235afc719, type: 3}
 --- !u!4 &6724673084695247774 stripped

@@ -91,10 +91,10 @@ namespace StarterAssets
             FirePrimaryInput(value.isPressed);
         }
 
-        //public void OnLeaderboard(InputValue value)
-        //{
-        //    LeaderboardInput(value.isPressed);
-        //}
+        public void OnLeaderboard(InputValue value)
+        {
+            LeaderboardInput(value.isPressed);
+        }
 #endif
 
         public void MoveInput(Vector2 newMoveDirection)
